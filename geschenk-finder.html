@@ -146,14 +146,17 @@
 
   @media (max-width: 768px) {
     .hamburger { display: block; }
+    .nav-inner { position: relative; }
     .nav-links {
       display: none;
-      position: absolute;
-      top: 60px;
+      position: fixed;
+      top: 61px;
       left: 0;
       right: 0;
+      z-index: 9999;
       background: rgba(255,248,240,0.98);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       flex-direction: column;
       padding: 16px 20px;
       gap: 4px;
@@ -161,7 +164,7 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     }
     .nav-links.open { display: flex; }
-    .nav-links a { width: 100%; text-align: center; padding: 12px 16px; }
+    .nav-links a { width: 100%; text-align: center; padding: 12px 16px; border-radius: 12px; }
   }
 
   /* ========== PAGE SECTIONS ========== */
@@ -1899,8 +1902,20 @@
   }
 
   function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
+    const nav = document.getElementById('navLinks');
+    nav.classList.toggle('open');
+    const hamburger = document.querySelector('.hamburger');
+    hamburger.textContent = nav.classList.contains('open') ? '✕' : '☰';
   }
+
+  document.addEventListener('click', function(e) {
+    const nav = document.getElementById('navLinks');
+    const hamburger = document.querySelector('.hamburger');
+    if (!nav.contains(e.target) && !hamburger.contains(e.target) && nav.classList.contains('open')) {
+      nav.classList.remove('open');
+      hamburger.textContent = '☰';
+    }
+  });
 
   // ========== COOKIE BANNER ==========
   function cookieAccept() {
