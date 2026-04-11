@@ -1408,6 +1408,35 @@
     color: #666;
   }
 
+  /* Expandable grids */
+  .expandable-hidden { display: none !important; }
+  .expandable.expanded .expandable-hidden { display: flex !important; }
+  .tags-grid.expanded .expandable-hidden { display: flex !important; }
+
+  .btn-expand {
+    display: block;
+    width: 100%;
+    background: none;
+    border: 2px dashed #D8D8D8;
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-expand:hover {
+    border-color: var(--purple);
+    color: var(--purple);
+  }
+
+  .btn-expand.hidden { display: none; }
+
   /* Mobile */
   @media (max-width: 480px) {
     .card { padding: 24px 20px; }
@@ -1478,16 +1507,19 @@
       <div class="step-label">Schritt 1 von 5</div>
       <div class="step-title">Was ist der Anlass? 🎉</div>
       <div class="step-subtitle">Wähle einen passenden Anlass aus</div>
-      <div class="options-grid">
+      <div class="options-grid expandable" id="anlassGrid">
         <button class="option-btn" data-value="Geburtstag" onclick="selectOption(this, 'anlass')"><span class="emoji">🎂</span>Geburtstag</button>
         <button class="option-btn" data-value="Weihnachten" onclick="selectOption(this, 'anlass')"><span class="emoji">🎄</span>Weihnachten</button>
-        <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')"><span class="emoji">💍</span>Hochzeit</button>
         <button class="option-btn" data-value="Valentinstag" onclick="selectOption(this, 'anlass')"><span class="emoji">💝</span>Valentinstag</button>
-        <button class="option-btn" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')"><span class="emoji">💼</span>Jobwechsel</button>
-        <button class="option-btn" data-value="Abschluss" onclick="selectOption(this, 'anlass')"><span class="emoji">🎓</span>Abschluss</button>
-        <button class="option-btn" data-value="Muttertag" onclick="selectOption(this, 'anlass')"><span class="emoji">💐</span>Muttertag</button>
-        <button class="option-btn" data-value="Anderes" onclick="selectOption(this, 'anlass')"><span class="emoji">🎊</span>Anderes</button>
+        <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')"><span class="emoji">💍</span>Hochzeit</button>
+        <button class="option-btn expandable-hidden" data-value="Muttertag" onclick="selectOption(this, 'anlass')"><span class="emoji">💐</span>Muttertag</button>
+        <button class="option-btn expandable-hidden" data-value="Vatertag" onclick="selectOption(this, 'anlass')"><span class="emoji">👔</span>Vatertag</button>
+        <button class="option-btn expandable-hidden" data-value="Abschluss" onclick="selectOption(this, 'anlass')"><span class="emoji">🎓</span>Abschluss</button>
+        <button class="option-btn expandable-hidden" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')"><span class="emoji">💼</span>Jobwechsel</button>
+        <button class="option-btn expandable-hidden" data-value="Einzug" onclick="selectOption(this, 'anlass')"><span class="emoji">🏠</span>Einzug</button>
+        <button class="option-btn expandable-hidden" data-value="Anderes" onclick="selectOption(this, 'anlass')"><span class="emoji">🎊</span>Anderes</button>
       </div>
+      <button class="btn-expand" onclick="expandGrid('anlassGrid')">+ Mehr anzeigen</button>
       <div class="nav-btns">
         <div></div>
         <button class="btn-next" id="next-1" onclick="nextStep(2)" disabled>Weiter →</button>
@@ -1499,16 +1531,19 @@
       <div class="step-label">Schritt 2 von 5</div>
       <div class="step-title">Für wen ist es? 👤</div>
       <div class="step-subtitle">Wähle die Beziehung zur Person</div>
-      <div class="options-grid">
-        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑</span>Partner/in</button>
-        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧</span>Kind</button>
-        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝</span>Freund/in</button>
-        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫</span>Geschwister</button>
-        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴</span>Großeltern</button>
-        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨</span>Vater</button>
-        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩</span>Mutter</button>
-        <button class="option-btn" data-value="Chef/in" onclick="selectOption(this, 'person')"><span class="emoji">👔</span>Chef/in</button>
+      <div class="options-grid expandable" id="personGrid">
+        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑🏽</span>Partner/in</button>
+        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝🏽</span>Freund/in</button>
+        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏽</span>Mutter</button>
+        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏽</span>Vater</button>
+        <button class="option-btn expandable-hidden" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏽</span>Geschwister</button>
+        <button class="option-btn expandable-hidden" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏽</span>Kind</button>
+        <button class="option-btn expandable-hidden" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏽</span>Großeltern</button>
+        <button class="option-btn expandable-hidden" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍💼</span>Kolleg/in</button>
+        <button class="option-btn expandable-hidden" data-value="Schwiegermutter/-vater" onclick="selectOption(this, 'person')"><span class="emoji">🧓🏽</span>Schwiegereltern</button>
+        <button class="option-btn expandable-hidden" data-value="Nachbar/in" onclick="selectOption(this, 'person')"><span class="emoji">🏠</span>Nachbar/in</button>
       </div>
+      <button class="btn-expand" onclick="expandGrid('personGrid')">+ Mehr anzeigen</button>
       <div class="nav-btns">
         <button class="btn-back" onclick="prevStep(1)">← Zurück</button>
         <button class="btn-next" id="next-2" onclick="currentStep='2'; nextStep(3)" disabled>Weiter →</button>
@@ -1556,24 +1591,27 @@
       <div class="step-label">Schritt 4 von 5</div>
       <div class="step-title">Was sind die Interessen? ✨</div>
       <div class="step-subtitle">Wähle beliebig viele aus</div>
-      <div class="tags-grid">
-        <button class="tag-btn" data-value="Gaming" onclick="toggleTag(this, 'interessen')">🎮 Gaming</button>
+      <div class="tags-grid expandable" id="interessenGrid">
+        <button class="tag-btn" data-value="Sport" onclick="toggleTag(this, 'interessen')">🏃 Sport</button>
+        <button class="tag-btn" data-value="Musik" onclick="toggleTag(this, 'interessen')">🎵 Musik</button>
         <button class="tag-btn" data-value="Kochen" onclick="toggleTag(this, 'interessen')">🍳 Kochen</button>
         <button class="tag-btn" data-value="Reisen" onclick="toggleTag(this, 'interessen')">✈️ Reisen</button>
+        <button class="tag-btn" data-value="Gaming" onclick="toggleTag(this, 'interessen')">🎮 Gaming</button>
         <button class="tag-btn" data-value="Lesen" onclick="toggleTag(this, 'interessen')">📚 Lesen</button>
-        <button class="tag-btn" data-value="Musik" onclick="toggleTag(this, 'interessen')">🎵 Musik</button>
-        <button class="tag-btn" data-value="Sport" onclick="toggleTag(this, 'interessen')">🏃 Sport</button>
-        <button class="tag-btn" data-value="Kunst" onclick="toggleTag(this, 'interessen')">🎨 Kunst</button>
-        <button class="tag-btn" data-value="Natur" onclick="toggleTag(this, 'interessen')">🌱 Natur</button>
-        <button class="tag-btn" data-value="Fitness" onclick="toggleTag(this, 'interessen')">💪 Fitness</button>
-        <button class="tag-btn" data-value="Mode" onclick="toggleTag(this, 'interessen')">👗 Mode</button>
-        <button class="tag-btn" data-value="Fotografie" onclick="toggleTag(this, 'interessen')">📸 Fotografie</button>
         <button class="tag-btn" data-value="Film" onclick="toggleTag(this, 'interessen')">🎬 Film</button>
-        <button class="tag-btn" data-value="Technologie" onclick="toggleTag(this, 'interessen')">💻 Technologie</button>
-        <button class="tag-btn" data-value="Yoga" onclick="toggleTag(this, 'interessen')">🧘 Yoga</button>
-        <button class="tag-btn" data-value="Heimwerken" onclick="toggleTag(this, 'interessen')">🔨 Heimwerken</button>
-        <button class="tag-btn" data-value="Backen" onclick="toggleTag(this, 'interessen')">🧁 Backen</button>
+        <button class="tag-btn" data-value="Mode" onclick="toggleTag(this, 'interessen')">👗 Mode</button>
+        <button class="tag-btn expandable-hidden" data-value="Fitness" onclick="toggleTag(this, 'interessen')">💪 Fitness</button>
+        <button class="tag-btn expandable-hidden" data-value="Technologie" onclick="toggleTag(this, 'interessen')">💻 Technologie</button>
+        <button class="tag-btn expandable-hidden" data-value="Kunst" onclick="toggleTag(this, 'interessen')">🎨 Kunst</button>
+        <button class="tag-btn expandable-hidden" data-value="Natur" onclick="toggleTag(this, 'interessen')">🌱 Natur</button>
+        <button class="tag-btn expandable-hidden" data-value="Fotografie" onclick="toggleTag(this, 'interessen')">📸 Fotografie</button>
+        <button class="tag-btn expandable-hidden" data-value="Yoga" onclick="toggleTag(this, 'interessen')">🧘 Yoga</button>
+        <button class="tag-btn expandable-hidden" data-value="Heimwerken" onclick="toggleTag(this, 'interessen')">🔨 Heimwerken</button>
+        <button class="tag-btn expandable-hidden" data-value="Backen" onclick="toggleTag(this, 'interessen')">🧁 Backen</button>
+        <button class="tag-btn expandable-hidden" data-value="Garten" onclick="toggleTag(this, 'interessen')">🌻 Garten</button>
+        <button class="tag-btn expandable-hidden" data-value="Tiere" onclick="toggleTag(this, 'interessen')">🐾 Tiere</button>
       </div>
+      <button class="btn-expand" onclick="expandGrid('interessenGrid')">+ Mehr anzeigen</button>
       <div style="margin-top: 16px;">
         <label style="font-weight: 700; color: #888; font-size: 0.9rem;">Noch etwas hinzufügen?</label>
         <input type="text" class="text-input" placeholder="z.B. Angeln, Schach, Tanzen..."
@@ -1902,7 +1940,7 @@
     budget: ''
   };
 
-  const geschlechtNotRequired = ['Mutter', 'Vater'];
+  const geschlechtNotRequired = ['Mutter', 'Vater', 'Schwiegermutter/-vater'];
 
   // ========== NAVIGATION ==========
   function navigateTo(page) {
@@ -1959,6 +1997,27 @@
     }
   }
 
+  // ========== EXPAND GRIDS ==========
+  function expandGrid(gridId) {
+    const grid = document.getElementById(gridId);
+    grid.classList.add('expanded');
+    const expandBtn = grid.nextElementSibling;
+    if (expandBtn && expandBtn.classList.contains('btn-expand')) {
+      expandBtn.classList.add('hidden');
+    }
+  }
+
+  // ========== AUTO-SCROLL ==========
+  function scrollToNext(btn) {
+    const step = btn.closest('.step');
+    const nextBtn = step.querySelector('.btn-next') || step.querySelector('.nav-btns');
+    if (nextBtn) {
+      setTimeout(() => {
+        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    }
+  }
+
   // ========== FORM LOGIC ==========
   function selectOption(btn, field) {
     const group = btn.closest('.options-grid');
@@ -1972,6 +2031,8 @@
     if (nextBtn) nextBtn.disabled = false;
 
     if (field === 'budget') showSummary();
+
+    scrollToNext(btn);
 
     if (field === 'geschlecht') {
       setTimeout(() => { showStep('step-3'); updateProgress(3); }, 300);
