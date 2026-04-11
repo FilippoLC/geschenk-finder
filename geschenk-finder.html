@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎁 Geschenk-Finder</title>
+<title>Geschenk-Finder - Finde das perfekte Geschenk</title>
+<meta name="description" content="Finde in 30 Sekunden das perfekte Geschenk. KI-basierter Geschenk-Finder mit personalisierten Empfehlungen.">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -29,7 +30,6 @@
     position: relative;
   }
 
-  /* Floating background shapes */
   body::before {
     content: '';
     position: fixed;
@@ -63,6 +63,111 @@
     66% { transform: translateY(8px) rotate(-3deg); }
   }
 
+  /* ========== NAVIGATION ========== */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255,248,240,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 0 20px;
+  }
+
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .nav-logo span { font-size: 1.5rem; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 50px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    background: linear-gradient(135deg, rgba(255,107,157,0.12), rgba(199,125,255,0.12));
+    color: var(--purple);
+  }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--pink), var(--purple)) !important;
+    color: white !important;
+    font-family: 'Fredoka One', cursive !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 12px rgba(199,125,255,0.3);
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(199,125,255,0.4) !important;
+    background: linear-gradient(135deg, var(--pink), var(--purple)) !important;
+  }
+
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(255,248,240,0.98);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      padding: 16px 20px;
+      gap: 4px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { width: 100%; text-align: center; padding: 12px 16px; }
+  }
+
+  /* ========== PAGE SECTIONS ========== */
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+
   .container {
     max-width: 680px;
     margin: 0 auto;
@@ -71,7 +176,9 @@
     z-index: 1;
   }
 
-  /* Header */
+  .container.wide { max-width: 860px; }
+
+  /* ========== HEADER ========== */
   .header {
     text-align: center;
     margin-bottom: 36px;
@@ -254,7 +361,6 @@
     box-shadow: 0 6px 20px rgba(199,125,255,0.25);
   }
 
-  /* Color variants per step */
   .step[data-color="pink"] .option-btn.selected {
     border-color: var(--pink);
     background: linear-gradient(135deg, rgba(255,107,157,0.12), rgba(255,217,61,0.08));
@@ -280,14 +386,9 @@
   }
 
   /* Slider */
-  .slider-wrap {
-    padding: 10px 0 20px;
-  }
+  .slider-wrap { padding: 10px 0 20px; }
 
-  .slider-display {
-    text-align: center;
-    margin-bottom: 16px;
-  }
+  .slider-display { text-align: center; margin-bottom: 16px; }
 
   .slider-value {
     font-family: 'Fredoka One', cursive;
@@ -323,9 +424,7 @@
     transition: transform 0.1s;
   }
 
-  input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
   .slider-labels {
     display: flex;
@@ -336,7 +435,7 @@
     font-weight: 700;
   }
 
-  /* Tags (Interests) */
+  /* Tags */
   .tags-grid {
     display: flex;
     flex-wrap: wrap;
@@ -394,7 +493,7 @@
     box-shadow: 0 0 0 4px rgba(199,125,255,0.1);
   }
 
-  /* Navigation */
+  /* Navigation buttons */
   .nav-btns {
     display: flex;
     justify-content: space-between;
@@ -442,9 +541,7 @@
     box-shadow: 0 10px 28px rgba(199,125,255,0.45);
   }
 
-  .btn-next:active {
-    transform: translateY(0);
-  }
+  .btn-next:active { transform: translateY(0); }
 
   .btn-next:disabled {
     opacity: 0.4;
@@ -484,7 +581,7 @@
     box-shadow: 0 14px 36px rgba(255,107,157,0.5);
   }
 
-  /* Summary step */
+  /* Summary */
   .summary-list {
     display: flex;
     flex-direction: column;
@@ -501,11 +598,7 @@
     padding: 14px 18px;
   }
 
-  .summary-icon {
-    font-size: 1.5rem;
-    width: 40px;
-    text-align: center;
-  }
+  .summary-icon { font-size: 1.5rem; width: 40px; text-align: center; }
 
   .summary-label {
     font-size: 0.8rem;
@@ -653,9 +746,7 @@
     letter-spacing: 0.5px;
   }
 
-  .product-body {
-    padding: 20px;
-  }
+  .product-body { padding: 20px; }
 
   .product-title {
     font-family: 'Fredoka One', cursive;
@@ -690,7 +781,6 @@
     margin-bottom: 14px;
   }
 
-  /* Warum passt das? */
   .why-box {
     background: linear-gradient(135deg, rgba(199,125,255,0.08), rgba(78,205,196,0.08));
     border-left: 3px solid var(--purple);
@@ -779,7 +869,6 @@
     background: rgba(255,107,157,0.08);
   }
 
-  /* Mehr laden Button */
   .btn-more {
     width: 100%;
     background: white;
@@ -804,12 +893,8 @@
     background: rgba(199,125,255,0.04);
   }
 
-  .btn-more.loading-more {
-    pointer-events: none;
-    opacity: 0.6;
-  }
+  .btn-more.loading-more { pointer-events: none; opacity: 0.6; }
 
-  /* Neue Suche */
   .btn-new-search {
     width: 100%;
     background: linear-gradient(135deg, var(--pink), var(--purple));
@@ -830,19 +915,10 @@
     box-shadow: 0 10px 28px rgba(199,125,255,0.45);
   }
 
-  /* Product card inner layout */
-  .product-inner {
-    display: flex;
-    flex-direction: column;
-  }
+  .product-inner { display: flex; flex-direction: column; }
 
-  /* Desktop: horizontal card layout */
   @media (min-width: 640px) {
-    .product-inner {
-      flex-direction: row;
-      align-items: stretch;
-    }
-
+    .product-inner { flex-direction: row; align-items: stretch; }
     .product-img-wrap {
       width: 220px;
       min-width: 220px;
@@ -851,16 +927,10 @@
       border-radius: 0;
       flex-shrink: 0;
     }
-
-    #resultsPage {
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
+    #resultsPage { max-width: 860px; margin: 0 auto; }
     .results-header h2 { font-size: 2.4rem; }
   }
 
-  /* Delivery row */
   .delivery-row {
     display: flex;
     align-items: center;
@@ -873,11 +943,7 @@
   }
 
   .delivery-icon { font-size: 1rem; }
-
-  .delivery-text {
-    font-size: 0.88rem;
-    font-weight: 700;
-  }
+  .delivery-text { font-size: 0.88rem; font-weight: 700; }
 
   .prime-badge {
     background: linear-gradient(135deg, #00A8E0, #0066C0);
@@ -889,13 +955,451 @@
     letter-spacing: 0.5px;
   }
 
-  /* Mobile adjustments */
+  /* ========== ABOUT PAGE ========== */
+  .about-hero {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+
+  .about-hero-emoji { font-size: 4rem; margin-bottom: 16px; display: block; }
+
+  .about-hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .about-hero p {
+    font-size: 1.15rem;
+    color: #777;
+    font-weight: 600;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .about-section {
+    background: white;
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+  }
+
+  .about-section h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .about-section p {
+    color: #666;
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .value-card {
+    background: linear-gradient(135deg, rgba(255,107,157,0.06), rgba(199,125,255,0.06));
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+
+  .value-card:hover { transform: translateY(-4px); }
+
+  .value-card .emoji { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+
+  .value-card h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .value-card p {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .cta-box {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 28px;
+    padding: 40px 32px;
+    text-align: center;
+    color: white;
+    margin-top: 24px;
+  }
+
+  .cta-box h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+
+  .cta-box p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: white;
+    color: var(--purple);
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  /* ========== SHOP PAGE ========== */
+  .shop-hero {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+
+  .shop-hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .shop-hero p {
+    font-size: 1.1rem;
+    color: #777;
+    font-weight: 600;
+  }
+
+  .shop-coming-soon {
+    background: white;
+    border-radius: 28px;
+    padding: 60px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+
+  .shop-coming-soon .emoji { font-size: 4rem; display: block; margin-bottom: 20px; }
+
+  .shop-coming-soon h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .shop-coming-soon p {
+    color: #888;
+    font-weight: 600;
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+
+  .shop-notify-form {
+    display: flex;
+    gap: 10px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .shop-notify-form input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2.5px solid #E8E8E8;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .shop-notify-form input:focus { border-color: var(--purple); }
+
+  .shop-notify-form button {
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+    border: none;
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(255,140,66,0.3);
+    white-space: nowrap;
+  }
+
+  .shop-notify-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,140,66,0.4);
+  }
+
+  @media (max-width: 480px) {
+    .shop-notify-form { flex-direction: column; }
+  }
+
+  /* ========== LEGAL PAGES ========== */
+  .legal-page {
+    padding: 40px 0 20px;
+  }
+
+  .legal-page h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .legal-card {
+    background: white;
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+  }
+
+  .legal-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin: 24px 0 12px;
+  }
+
+  .legal-card h2:first-child { margin-top: 0; }
+
+  .legal-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 18px 0 8px;
+  }
+
+  .legal-card p, .legal-card li {
+    color: #666;
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .legal-card ul {
+    margin-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  .legal-card a {
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .legal-card a:hover { text-decoration: underline; }
+
+  /* ========== FOOTER ========== */
+  .site-footer {
+    background: white;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding: 40px 20px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-brand h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .footer-brand p {
+    color: #999;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .footer-links h4 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .footer-links a {
+    display: block;
+    color: #888;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 4px 0;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .footer-links a:hover { color: var(--purple); }
+
+  .footer-bottom {
+    max-width: 960px;
+    margin: 24px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+    color: #bbb;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  /* ========== COOKIE BANNER ========== */
+  .cookie-banner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background: white;
+    box-shadow: 0 -4px 30px rgba(0,0,0,0.12);
+    padding: 20px;
+    animation: slideUp 0.4s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .cookie-banner.show { display: block; }
+
+  .cookie-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cookie-text {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .cookie-text h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .cookie-text p {
+    color: #888;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .cookie-text a {
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .cookie-buttons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .cookie-btn {
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .cookie-btn-accept {
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    color: white;
+    box-shadow: 0 4px 12px rgba(107,203,119,0.3);
+  }
+
+  .cookie-btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(107,203,119,0.4);
+  }
+
+  .cookie-btn-decline {
+    background: #F0F0F0;
+    color: #888;
+  }
+
+  .cookie-btn-decline:hover {
+    background: #E8E8E8;
+    color: #666;
+  }
+
+  /* Mobile */
   @media (max-width: 480px) {
     .card { padding: 24px 20px; }
     .header h1 { font-size: 2rem; }
     .options-grid { grid-template-columns: repeat(2, 1fr); }
     .step-title { font-size: 1.5rem; }
     .product-img-wrap { height: 180px; }
+    .about-hero h1, .shop-hero h1 { font-size: 1.8rem; }
+    .about-section, .legal-card { padding: 24px 20px; }
+    .cookie-inner { flex-direction: column; text-align: center; }
+    .cookie-buttons { width: 100%; justify-content: center; }
   }
 </style>
 </head>
@@ -909,16 +1413,32 @@
 <div class="floating-emoji">🎊</div>
 <div class="floating-emoji">💝</div>
 
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" onclick="navigateTo('home')">
+      <span>🎁</span> Geschenk-Finder
+    </a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="navigateTo('home')" class="active" id="nav-home">Startseite</a></li>
+      <li><a onclick="navigateTo('about')" id="nav-about">Unsere Mission</a></li>
+      <li><a onclick="navigateTo('shop')" id="nav-shop">Shop</a></li>
+      <li><a onclick="navigateTo('home')" class="nav-cta">Geschenk finden</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page-section active" id="page-home">
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
     <span class="logo">🎁</span>
     <h1>Geschenk-Finder</h1>
     <p>Finde das perfekte Geschenk in 30 Sekunden!</p>
   </div>
 
-  <!-- Progress -->
   <div class="progress-wrap">
     <div class="progress-labels">
       <div class="progress-dot active" id="dot-1">1</div>
@@ -932,7 +1452,6 @@
     </div>
   </div>
 
-  <!-- Card -->
   <div class="card">
 
     <!-- Step 1: Anlass -->
@@ -941,30 +1460,14 @@
       <div class="step-title">Was ist der Anlass? 🎉</div>
       <div class="step-subtitle">Wähle einen passenden Anlass aus</div>
       <div class="options-grid">
-        <button class="option-btn" data-value="Geburtstag" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">🎂</span>Geburtstag
-        </button>
-        <button class="option-btn" data-value="Weihnachten" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">🎄</span>Weihnachten
-        </button>
-        <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">💍</span>Hochzeit
-        </button>
-        <button class="option-btn" data-value="Valentinstag" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">💝</span>Valentinstag
-        </button>
-        <button class="option-btn" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">💼</span>Jobwechsel
-        </button>
-        <button class="option-btn" data-value="Abschluss" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">🎓</span>Abschluss
-        </button>
-        <button class="option-btn" data-value="Muttertag" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">💐</span>Muttertag
-        </button>
-        <button class="option-btn" data-value="Anderes" onclick="selectOption(this, 'anlass')">
-          <span class="emoji">🎊</span>Anderes
-        </button>
+        <button class="option-btn" data-value="Geburtstag" onclick="selectOption(this, 'anlass')"><span class="emoji">🎂</span>Geburtstag</button>
+        <button class="option-btn" data-value="Weihnachten" onclick="selectOption(this, 'anlass')"><span class="emoji">🎄</span>Weihnachten</button>
+        <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')"><span class="emoji">💍</span>Hochzeit</button>
+        <button class="option-btn" data-value="Valentinstag" onclick="selectOption(this, 'anlass')"><span class="emoji">💝</span>Valentinstag</button>
+        <button class="option-btn" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')"><span class="emoji">💼</span>Jobwechsel</button>
+        <button class="option-btn" data-value="Abschluss" onclick="selectOption(this, 'anlass')"><span class="emoji">🎓</span>Abschluss</button>
+        <button class="option-btn" data-value="Muttertag" onclick="selectOption(this, 'anlass')"><span class="emoji">💐</span>Muttertag</button>
+        <button class="option-btn" data-value="Anderes" onclick="selectOption(this, 'anlass')"><span class="emoji">🎊</span>Anderes</button>
       </div>
       <div class="nav-btns">
         <div></div>
@@ -978,30 +1481,14 @@
       <div class="step-title">Für wen ist es? 👤</div>
       <div class="step-subtitle">Wähle die Beziehung zur Person</div>
       <div class="options-grid">
-        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')">
-          <span class="emoji">💑</span>Partner/in
-        </button>
-        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')">
-          <span class="emoji">👧</span>Kind
-        </button>
-        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')">
-          <span class="emoji">🤝</span>Freund/in
-        </button>
-        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')">
-          <span class="emoji">👫</span>Geschwister
-        </button>
-        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')">
-          <span class="emoji">👴</span>Großeltern
-        </button>
-        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')">
-          <span class="emoji">👨</span>Vater
-        </button>
-        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')">
-          <span class="emoji">👩</span>Mutter
-        </button>
-        <button class="option-btn" data-value="Chef/in" onclick="selectOption(this, 'person')">
-          <span class="emoji">👔</span>Chef/in
-        </button>
+        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑</span>Partner/in</button>
+        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧</span>Kind</button>
+        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝</span>Freund/in</button>
+        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫</span>Geschwister</button>
+        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴</span>Großeltern</button>
+        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨</span>Vater</button>
+        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩</span>Mutter</button>
+        <button class="option-btn" data-value="Chef/in" onclick="selectOption(this, 'person')"><span class="emoji">👔</span>Chef/in</button>
       </div>
       <div class="nav-btns">
         <button class="btn-back" onclick="prevStep(1)">← Zurück</button>
@@ -1009,21 +1496,15 @@
       </div>
     </div>
 
-    <!-- Step 2b: Geschlecht (nur wenn nötig) -->
+    <!-- Step 2b: Geschlecht -->
     <div class="step" id="step-2b" data-color="purple">
       <div class="step-label">Schritt 2b von 5</div>
       <div class="step-title">Welches Geschlecht? 🌸</div>
       <div class="step-subtitle">Das hilft uns bei den Empfehlungen</div>
       <div class="options-grid wide">
-        <button class="option-btn" data-value="Männlich" onclick="selectOption(this, 'geschlecht')">
-          <span class="emoji">👨</span>Männlich
-        </button>
-        <button class="option-btn" data-value="Weiblich" onclick="selectOption(this, 'geschlecht')">
-          <span class="emoji">👩</span>Weiblich
-        </button>
-        <button class="option-btn" data-value="Divers" onclick="selectOption(this, 'geschlecht')">
-          <span class="emoji">🌈</span>Divers
-        </button>
+        <button class="option-btn" data-value="Männlich" onclick="selectOption(this, 'geschlecht')"><span class="emoji">👨</span>Männlich</button>
+        <button class="option-btn" data-value="Weiblich" onclick="selectOption(this, 'geschlecht')"><span class="emoji">👩</span>Weiblich</button>
+        <button class="option-btn" data-value="Divers" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🌈</span>Divers</button>
       </div>
       <div class="nav-btns">
         <button class="btn-back" onclick="showStep('step-2'); updateProgress(2)">← Zurück</button>
@@ -1091,27 +1572,14 @@
       <div class="step-title">Was ist dein Budget? 💰</div>
       <div class="step-subtitle">Wähle eine Preisspanne aus</div>
       <div class="options-grid wide">
-        <button class="option-btn" data-value="unter 20€" onclick="selectOption(this, 'budget')">
-          <span class="emoji">🪙</span>Unter 20€
-        </button>
-        <button class="option-btn" data-value="20–50€" onclick="selectOption(this, 'budget')">
-          <span class="emoji">💵</span>20 – 50€
-        </button>
-        <button class="option-btn" data-value="50–100€" onclick="selectOption(this, 'budget')">
-          <span class="emoji">💳</span>50 – 100€
-        </button>
-        <button class="option-btn" data-value="100–200€" onclick="selectOption(this, 'budget')">
-          <span class="emoji">💎</span>100 – 200€
-        </button>
-        <button class="option-btn" data-value="über 200€" onclick="selectOption(this, 'budget')">
-          <span class="emoji">👑</span>Über 200€
-        </button>
-        <button class="option-btn" data-value="egal" onclick="selectOption(this, 'budget')">
-          <span class="emoji">🤷</span>Egal!
-        </button>
+        <button class="option-btn" data-value="unter 20€" onclick="selectOption(this, 'budget')"><span class="emoji">🪙</span>Unter 20€</button>
+        <button class="option-btn" data-value="20–50€" onclick="selectOption(this, 'budget')"><span class="emoji">💵</span>20 – 50€</button>
+        <button class="option-btn" data-value="50–100€" onclick="selectOption(this, 'budget')"><span class="emoji">💳</span>50 – 100€</button>
+        <button class="option-btn" data-value="100–200€" onclick="selectOption(this, 'budget')"><span class="emoji">💎</span>100 – 200€</button>
+        <button class="option-btn" data-value="über 200€" onclick="selectOption(this, 'budget')"><span class="emoji">👑</span>Über 200€</button>
+        <button class="option-btn" data-value="egal" onclick="selectOption(this, 'budget')"><span class="emoji">🤷</span>Egal!</button>
       </div>
 
-      <!-- Summary -->
       <div id="summaryBlock" style="display:none; margin-top: 28px;">
         <div style="font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #aaa; margin-bottom: 12px;">Deine Angaben:</div>
         <div class="summary-list" id="summaryList"></div>
@@ -1144,20 +1612,261 @@
       <h2 id="resultsTitle">🎁 Perfekte Geschenke gefunden!</h2>
       <p id="resultsSubtitle">3 Ideen für dich ausgewählt</p>
     </div>
-
     <div id="productList"></div>
-
     <button class="btn-more" id="btnMore" onclick="loadMore()">
       <span id="btnMoreIcon">✨</span>
       <span id="btnMoreText">Weitere Artikel anzeigen</span>
     </button>
-
-    <button class="btn-new-search" onclick="newSearch()">
-      🔍 Neue Suche starten
-    </button>
+    <button class="btn-new-search" onclick="newSearch()">🔍 Neue Suche starten</button>
   </div>
 
-</div><!-- end container -->
+</div>
+</div><!-- end page-home -->
+
+<!-- ==================== ABOUT PAGE ==================== -->
+<div class="page-section" id="page-about">
+<div class="container wide">
+
+  <div class="about-hero">
+    <span class="about-hero-emoji">💛</span>
+    <h1>Unsere Mission</h1>
+    <p>Wir glauben daran, dass jedes Geschenk die Welt ein kleines bisschen besser machen kann. Unser Ziel? Menschen glücklich machen - einen Geschenkmoment nach dem anderen.</p>
+  </div>
+
+  <div class="about-section">
+    <h2>🌍 Warum gibt es den Geschenk-Finder?</h2>
+    <p>Jeder kennt das: Man möchte jemandem eine Freude machen, aber die Suche nach dem perfekten Geschenk kostet Stunden. Man scrollt endlos durch Online-Shops, liest unzählige Bewertungen und ist am Ende genauso ratlos wie am Anfang.</p>
+    <p>Genau deshalb haben wir den Geschenk-Finder ins Leben gerufen. Wir nutzen künstliche Intelligenz, um dir in Sekunden personalisierte Geschenkideen zu liefern - basierend auf der Person, die du beschenkst. Kein endloses Suchen mehr. Nur noch Freude.</p>
+    <p>Aber unser Anspruch geht weiter: Wir wollen nicht nur Geschenke finden, sondern echtes Glück verbreiten. Denn wenn ein Geschenk wirklich passt, entsteht ein magischer Moment - für den Schenkenden und den Beschenkten.</p>
+  </div>
+
+  <div class="about-section">
+    <h2>✨ Unsere Werte</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="emoji">💝</span>
+        <h3>Glück verbreiten</h3>
+        <p>Jedes perfekte Geschenk macht zwei Menschen glücklich. Das treibt uns jeden Tag an.</p>
+      </div>
+      <div class="value-card">
+        <span class="emoji">🤖</span>
+        <h3>Smarte Technologie</h3>
+        <p>Wir nutzen KI, damit du weniger Zeit mit Suchen und mehr Zeit mit Schenken verbringst.</p>
+      </div>
+      <div class="value-card">
+        <span class="emoji">🌱</span>
+        <h3>Nachhaltigkeit</h3>
+        <p>Weniger Fehlkäufe bedeuten weniger Retouren. Gut für dich, gut für die Umwelt.</p>
+      </div>
+      <div class="value-card">
+        <span class="emoji">🤝</span>
+        <h3>Gemeinschaft</h3>
+        <p>Wir bauen eine Community von Menschen, die die Welt durch kleine Gesten besser machen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h2>🎯 Unsere Vision</h2>
+    <p>Stell dir eine Welt vor, in der jedes Geschenk sitzt. Keine verlegenen Lächeln beim Auspacken, keine Umtauschorgien nach Weihnachten. Stattdessen: echte Freude, echte Überraschung, echte Verbundenheit.</p>
+    <p>Wenn du den Geschenk-Finder benutzt, tust du gleichzeitig etwas Gutes: Du schenkst bewusster, vermeidest Fehlkäufe und machst jemanden wirklich glücklich. Das ist unser kleiner Beitrag für eine bessere Welt.</p>
+  </div>
+
+  <div class="cta-box">
+    <h2>Werde Teil unserer Mission! 🚀</h2>
+    <p>Du glaubst auch daran, dass die Welt mehr Freude braucht? Du hast Ideen, wie wir noch besser werden können? Oder du willst einfach mithelfen, die Welt zu einem besseren Ort zu machen? Dann melde dich bei uns!</p>
+    <a href="mailto:hallo@geschenk-finder.de" class="cta-btn">Kontakt aufnehmen</a>
+  </div>
+
+</div>
+</div><!-- end page-about -->
+
+<!-- ==================== SHOP PAGE ==================== -->
+<div class="page-section" id="page-shop">
+<div class="container wide">
+
+  <div class="shop-hero">
+    <h1>🛍️ Unser Shop</h1>
+    <p>Handverlesene Geschenkideen, direkt bestellen.</p>
+  </div>
+
+  <div class="shop-coming-soon">
+    <span class="emoji">🚧</span>
+    <h2>Coming Soon!</h2>
+    <p>Wir arbeiten gerade an unserem Shop mit handverlesenen Geschenkideen, Geschenkboxen und exklusiven Bundles. Lass dich benachrichtigen, wenn es soweit ist!</p>
+    <div class="shop-notify-form">
+      <input type="email" placeholder="Deine E-Mail-Adresse" id="shopEmail">
+      <button onclick="shopNotify()">Benachrichtigen</button>
+    </div>
+    <p id="shopNotifyMsg" style="display:none; color: var(--green); margin-top: 16px; font-weight: 700;">Danke! Wir melden uns, sobald der Shop live ist. 🎉</p>
+  </div>
+
+</div>
+</div><!-- end page-shop -->
+
+<!-- ==================== IMPRESSUM ==================== -->
+<div class="page-section" id="page-impressum">
+<div class="container wide">
+  <div class="legal-page">
+    <h1>Impressum</h1>
+    <div class="legal-card">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p>
+        <strong>[DEIN VOLLSTÄNDIGER NAME]</strong><br>
+        [Straße und Hausnummer]<br>
+        [PLZ] [Stadt]<br>
+        Deutschland
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        E-Mail: [deine-email@beispiel.de]<br>
+        Telefon: [Deine Telefonnummer]
+      </p>
+
+      <h2>Umsatzsteuer-ID</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>
+      [DE XXXXXXXXX] (falls vorhanden)</p>
+
+      <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+      <p>
+        [DEIN VOLLSTÄNDIGER NAME]<br>
+        [Straße und Hausnummer]<br>
+        [PLZ] [Stadt]
+      </p>
+
+      <h2>EU-Streitschlichtung</h2>
+      <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+      <h2>Haftungsausschluss</h2>
+      <h3>Haftung für Inhalte</h3>
+      <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+
+      <h3>Haftung für Links</h3>
+      <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+      <h2>Affiliate-Hinweis</h2>
+      <p>Diese Webseite enthält sogenannte Affiliate-Links. Wenn du über diese Links Produkte kaufst, erhalten wir eine kleine Provision. Der Preis für dich ändert sich dadurch nicht. Diese Einnahmen helfen uns, den Geschenk-Finder kostenfrei anzubieten und weiterzuentwickeln.</p>
+    </div>
+  </div>
+</div>
+</div><!-- end page-impressum -->
+
+<!-- ==================== DATENSCHUTZ ==================== -->
+<div class="page-section" id="page-datenschutz">
+<div class="container wide">
+  <div class="legal-page">
+    <h1>Datenschutzerklärung</h1>
+    <div class="legal-card">
+
+      <h2>1. Datenschutz auf einen Blick</h2>
+      <h3>Allgemeine Hinweise</h3>
+      <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+
+      <h3>Datenerfassung auf dieser Website</h3>
+      <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br>
+      Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.</p>
+
+      <p><strong>Wie erfassen wir Ihre Daten?</strong><br>
+      Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen (z.B. durch Eingabe in das Geschenk-Finder Formular). Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).</p>
+
+      <h2>2. Hosting</h2>
+      <p>Diese Website wird bei Hostinger International Ltd. gehostet. Details entnehmen Sie der Datenschutzerklärung von Hostinger.</p>
+
+      <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
+      <h3>Datenschutz</h3>
+      <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>
+
+      <h3>Hinweis zur verantwortlichen Stelle</h3>
+      <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br><br>
+      [DEIN VOLLSTÄNDIGER NAME]<br>
+      [Straße und Hausnummer]<br>
+      [PLZ] [Stadt]<br>
+      E-Mail: [deine-email@beispiel.de]</p>
+
+      <h2>4. Datenerfassung auf dieser Website</h2>
+      <h3>Cookies</h3>
+      <p>Unsere Website verwendet Cookies. Dabei handelt es sich um kleine Textdateien, die Ihr Webbrowser auf Ihrem Endgerät speichert. Wir verwenden folgende Arten von Cookies:</p>
+      <ul>
+        <li><strong>Technisch notwendige Cookies:</strong> Diese sind für den Betrieb der Seite erforderlich (z.B. Cookie-Einwilligung).</li>
+        <li><strong>Analyse-Cookies:</strong> Diese werden nur mit Ihrer Einwilligung gesetzt und helfen uns zu verstehen, wie Besucher unsere Seite nutzen.</li>
+      </ul>
+      <p>Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben.</p>
+
+      <h3>Server-Log-Dateien</h3>
+      <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:</p>
+      <ul>
+        <li>Browsertyp und Browserversion</li>
+        <li>Verwendetes Betriebssystem</li>
+        <li>Referrer URL</li>
+        <li>Hostname des zugreifenden Rechners</li>
+        <li>Uhrzeit der Serveranfrage</li>
+        <li>IP-Adresse</li>
+      </ul>
+      <p>Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p>
+
+      <h3>Geschenk-Finder Formular</h3>
+      <p>Wenn Sie den Geschenk-Finder nutzen, werden die von Ihnen eingegebenen Daten (Anlass, Person, Geschlecht, Alter, Interessen, Budget) an unseren Server übermittelt und zur Generierung personalisierter Geschenkempfehlungen verarbeitet. Diese Daten werden nicht dauerhaft gespeichert und nach der Bearbeitung Ihrer Anfrage gelöscht.</p>
+
+      <h2>5. Affiliate-Programme</h2>
+      <p>Diese Website nimmt am Amazon Partnerprogramm teil. Durch die Platzierung von Affiliate-Links verdienen wir an qualifizierten Käufen. Amazon setzt dabei eigene Cookies ein, um die Herkunft von Bestellungen nachvollziehen zu können. Weitere Informationen finden Sie in der Datenschutzerklärung von Amazon.</p>
+
+      <h2>6. Ihre Rechte</h2>
+      <p>Sie haben jederzeit das Recht:</p>
+      <ul>
+        <li>Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten zu erhalten (Art. 15 DSGVO)</li>
+        <li>Die Berichtigung unrichtiger Daten zu verlangen (Art. 16 DSGVO)</li>
+        <li>Die Löschung Ihrer Daten zu verlangen (Art. 17 DSGVO)</li>
+        <li>Die Einschränkung der Verarbeitung zu verlangen (Art. 18 DSGVO)</li>
+        <li>Der Verarbeitung zu widersprechen (Art. 21 DSGVO)</li>
+        <li>Datenübertragbarkeit zu verlangen (Art. 20 DSGVO)</li>
+      </ul>
+      <p>Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt, haben Sie das Recht, sich bei einer Aufsichtsbehörde zu beschweren.</p>
+
+      <h2>7. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+      <p>Diese Datenschutzerklärung ist aktuell gültig und hat den Stand April 2026. Durch die Weiterentwicklung unserer Website oder aufgrund geänderter gesetzlicher Vorgaben kann eine Anpassung dieser Datenschutzerklärung erforderlich werden.</p>
+    </div>
+  </div>
+</div>
+</div><!-- end page-datenschutz -->
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>🎁 Geschenk-Finder</h3>
+      <p>Finde das perfekte Geschenk in Sekunden. KI-gestützt, persönlich und mit Liebe gemacht. Gemeinsam machen wir die Welt ein bisschen glücklicher.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <a onclick="navigateTo('home')">Startseite</a>
+      <a onclick="navigateTo('about')">Unsere Mission</a>
+      <a onclick="navigateTo('shop')">Shop</a>
+    </div>
+    <div class="footer-links">
+      <h4>Rechtliches</h4>
+      <a onclick="navigateTo('impressum')">Impressum</a>
+      <a onclick="navigateTo('datenschutz')">Datenschutz</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 Geschenk-Finder. Alle Rechte vorbehalten. Mit 💛 gemacht.
+  </div>
+</footer>
+
+<!-- ==================== COOKIE BANNER ==================== -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <h3>🍪 Cookies</h3>
+      <p>Wir verwenden Cookies, um dir die bestmögliche Erfahrung zu bieten. Technisch notwendige Cookies sind immer aktiv. Analyse-Cookies helfen uns, die Seite zu verbessern. <a onclick="navigateTo('datenschutz')">Mehr erfahren</a></p>
+    </div>
+    <div class="cookie-buttons">
+      <button class="cookie-btn cookie-btn-decline" onclick="cookieDecline()">Nur notwendige</button>
+      <button class="cookie-btn cookie-btn-accept" onclick="cookieAccept()">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
 
 <script>
   const WEBHOOK_URL = 'https://n8n.srv1570962.hstgr.cloud/webhook/geschenk-finder-v2';
@@ -1174,27 +1883,65 @@
     budget: ''
   };
 
-  // Personen die KEINEN Geschlecht-Schritt brauchen
   const geschlechtNotRequired = ['Mutter', 'Vater'];
 
+  // ========== NAVIGATION ==========
+  function navigateTo(page) {
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const navLink = document.getElementById('nav-' + page);
+    if (navLink) navLink.classList.add('active');
+
+    document.getElementById('navLinks').classList.remove('open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // ========== COOKIE BANNER ==========
+  function cookieAccept() {
+    localStorage.setItem('cookie-consent', 'all');
+    document.getElementById('cookieBanner').classList.remove('show');
+  }
+
+  function cookieDecline() {
+    localStorage.setItem('cookie-consent', 'necessary');
+    document.getElementById('cookieBanner').classList.remove('show');
+  }
+
+  if (!localStorage.getItem('cookie-consent')) {
+    setTimeout(() => {
+      document.getElementById('cookieBanner').classList.add('show');
+    }, 1500);
+  }
+
+  // ========== SHOP NOTIFY ==========
+  function shopNotify() {
+    const email = document.getElementById('shopEmail').value;
+    if (email && email.includes('@')) {
+      document.getElementById('shopNotifyMsg').style.display = 'block';
+      document.getElementById('shopEmail').value = '';
+    }
+  }
+
+  // ========== FORM LOGIC ==========
   function selectOption(btn, field) {
     const group = btn.closest('.options-grid');
     group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     formData[field] = btn.dataset.value;
 
-    // Enable next button
     const stepId = btn.closest('.step').id;
     const stepNum = stepId.replace('step-', '');
     const nextBtn = document.getElementById('next-' + stepNum);
     if (nextBtn) nextBtn.disabled = false;
 
-    // Show summary + submit on step 5
-    if (field === 'budget') {
-      showSummary();
-    }
+    if (field === 'budget') showSummary();
 
-    // Geschlecht: sofort weiter zu Schritt 3
     if (field === 'geschlecht') {
       setTimeout(() => { showStep('step-3'); updateProgress(3); }, 300);
     }
@@ -1208,23 +1955,15 @@
     } else {
       formData[field] = formData[field].filter(v => v !== val);
     }
-    // Enable next as soon as at least one is selected (or always allow skip)
     const nextBtn = document.getElementById('next-4');
     if (nextBtn) nextBtn.disabled = false;
   }
 
   function nextStep(num) {
-    // Nach Schritt 2: prüfen ob Geschlecht-Schritt nötig
-    if (num === '2b') {
-      showStep('step-2b');
-      updateProgress('2b');
-      return;
-    }
+    if (num === '2b') { showStep('step-2b'); updateProgress('2b'); return; }
     if (num === 3 && currentStep === '2') {
       if (!geschlechtNotRequired.includes(formData.person)) {
-        showStep('step-2b');
-        updateProgress('2b');
-        return;
+        showStep('step-2b'); updateProgress('2b'); return;
       }
     }
     showStep('step-' + num);
@@ -1242,11 +1981,8 @@
   }
 
   function prevStep(num) {
-    // Zurück von Schritt 3: wenn Geschlecht-Schritt vorhanden war, dahin zurück
     if (num === 3 && !geschlechtNotRequired.includes(formData.person)) {
-      showStep('step-2b');
-      updateProgress('2b');
-      return;
+      showStep('step-2b'); updateProgress('2b'); return;
     }
     showStep('step-' + num);
     updateProgress(num);
@@ -1254,7 +1990,6 @@
   }
 
   function updateProgress(step) {
-    // 2b zählt als zwischen 2 und 3
     const stepNum = step === '2b' ? 2.5 : parseInt(step);
     const pct = stepNum <= 1 ? 10 : stepNum <= 2 ? 28 : stepNum <= 2.5 ? 40 : stepNum <= 3 ? 52 : stepNum <= 4 ? 72 : 92;
     document.getElementById('progressFill').style.width = pct + '%';
@@ -1294,79 +2029,54 @@
     nav.style.display = 'flex';
   }
 
-  // Demo Produkte
   const demoProducts = [
     {
       title: "Lego Icons Botanicals Wildblumenstrauß",
-      desc: "Ein wunderschönes Lego-Set zum Basteln eines nie verwelkenden Blumenstraußes – perfekt für kreative Stunden.",
-      why: "Ideal für kreative Menschen die gerne basteln. Der Strauß hält für immer und erinnert jeden Tag an dich!",
-      price: "49,99",
-      rating: 4.8,
-      reviews: "2.341",
+      desc: "Ein wunderschönes Lego-Set zum Basteln eines nie verwelkenden Blumenstraußes.",
+      why: "Ideal für kreative Menschen die gerne basteln. Der Strauß hält für immer!",
+      price: "49,99", rating: 4.8, reviews: "2.341",
       img: "https://images-na.ssl-images-amazon.com/images/I/81B2gVs8MmL._AC_SL1500_.jpg",
-      badge: "🏆 Bestseller",
-      delivery: "Morgen, 9. Apr.",
-      prime: true
+      badge: "🏆 Bestseller", delivery: "Morgen, 9. Apr.", prime: true
     },
     {
       title: "Personalisiertes Notizbuch mit Gravur",
-      desc: "Hochwertiges Leder-Notizbuch mit individuellem Namen oder Wunschtext graviert. A5 Format, 200 Seiten.",
-      why: "Ein persönliches Geschenk das zeigt, dass du dir wirklich Gedanken gemacht hast. Perfekt für kreative oder nachdenkliche Menschen.",
-      price: "24,90",
-      rating: 4.6,
-      reviews: "876",
+      desc: "Hochwertiges Leder-Notizbuch mit individuellem Namen. A5 Format, 200 Seiten.",
+      why: "Ein persönliches Geschenk das zeigt, dass du dir Gedanken gemacht hast.",
+      price: "24,90", rating: 4.6, reviews: "876",
       img: "https://images-na.ssl-images-amazon.com/images/I/71QCrD8B9EL._AC_SL1500_.jpg",
-      badge: "💝 Beliebt",
-      delivery: "10. – 14. Apr.",
-      prime: false
+      badge: "💝 Beliebt", delivery: "10. – 14. Apr.", prime: false
     },
     {
       title: "Kärcher Hochdruckreiniger K 4 Compact",
-      desc: "Kompakter Hochdruckreiniger mit 1800 Watt, ideal für Terrasse, Auto und Gartenmöbel. Einfach zu verstauen.",
-      why: "Praktisch und nützlich – ein Geschenk das wirklich genutzt wird! Perfekt für alle die ihr Zuhause gerne pflegen.",
-      price: "89,99",
-      rating: 4.5,
-      reviews: "5.102",
+      desc: "Kompakter Hochdruckreiniger mit 1800 Watt, ideal für Terrasse, Auto und Gartenmöbel.",
+      why: "Praktisch und nützlich - ein Geschenk das wirklich genutzt wird!",
+      price: "89,99", rating: 4.5, reviews: "5.102",
       img: "https://images-na.ssl-images-amazon.com/images/I/61oqNbA5jWL._AC_SL1500_.jpg",
-      badge: "⚡ Top Bewertet",
-      delivery: "Morgen, 9. Apr.",
-      prime: true
+      badge: "⚡ Top Bewertet", delivery: "Morgen, 9. Apr.", prime: true
     },
     {
       title: "Spotify Geschenkkarte 30€",
-      desc: "Drei Monate Musik ohne Werbung – für alle die Musik lieben. Sofort per E-Mail lieferbar.",
-      why: "Musik begleitet uns überall. Mit dieser Karte schenkst du grenzenlose Unterhaltung für unterwegs, zuhause oder beim Sport!",
-      price: "30,00",
-      rating: 4.9,
-      reviews: "12.450",
+      desc: "Drei Monate Musik ohne Werbung. Sofort per E-Mail lieferbar.",
+      why: "Musik begleitet uns überall. Grenzenlose Unterhaltung als Geschenk!",
+      price: "30,00", rating: 4.9, reviews: "12.450",
       img: "https://images-na.ssl-images-amazon.com/images/I/51zB3dVCkLL._AC_SL1500_.jpg",
-      badge: "🎵 Digital",
-      delivery: "Sofort per E-Mail",
-      prime: true
+      badge: "🎵 Digital", delivery: "Sofort per E-Mail", prime: true
     },
     {
       title: "Philips Sonicare Elektrische Zahnbürste",
-      desc: "Schallzahnbürste mit 3 Putzprogrammen, Timer und 2 Wochen Akkulaufzeit. Für strahlend weißere Zähne.",
-      why: "Ein hochwertiges Geschenk das täglich genutzt wird – praktisch, gesundheitsfördernd und dennoch ein echtes Upgrade!",
-      price: "59,95",
-      rating: 4.7,
-      reviews: "3.890",
+      desc: "Schallzahnbürste mit 3 Putzprogrammen, Timer und 2 Wochen Akkulaufzeit.",
+      why: "Ein hochwertiges Geschenk das täglich genutzt wird!",
+      price: "59,95", rating: 4.7, reviews: "3.890",
       img: "https://images-na.ssl-images-amazon.com/images/I/61MRpFmGMGL._AC_SL1500_.jpg",
-      badge: "✨ Premium",
-      delivery: "Übermorgen, 10. Apr.",
-      prime: true
+      badge: "✨ Premium", delivery: "Übermorgen, 10. Apr.", prime: true
     },
     {
       title: "Instant Pot Duo 5,7L Multikocher",
-      desc: "7-in-1 Elektrischer Schnellkochtopf, Slow Cooker, Reiskocher, Dämpfer und mehr. Spart Zeit und Energie.",
-      why: "Für alle die gerne kochen aber wenig Zeit haben. Dieses Gerät macht Kochen zum Erlebnis – jedes Gericht gelingt!",
-      price: "79,99",
-      rating: 4.6,
-      reviews: "8.234",
+      desc: "7-in-1 Elektrischer Schnellkochtopf, Slow Cooker, Reiskocher und mehr.",
+      why: "Für alle die gerne kochen aber wenig Zeit haben!",
+      price: "79,99", rating: 4.6, reviews: "8.234",
       img: "https://images-na.ssl-images-amazon.com/images/I/71V1B2r5hVL._AC_SL1500_.jpg",
-      badge: "👨‍🍳 Kochliebhaber",
-      delivery: "11. – 13. Apr.",
-      prime: false
+      badge: "👨‍🍳 Kochliebhaber", delivery: "11. – 13. Apr.", prime: false
     }
   ];
 
@@ -1383,9 +2093,7 @@
   }
 
   function renderProduct(p, index) {
-    const primeTag = p.prime
-      ? `<span class="prime-badge">📦 Prime</span>`
-      : '';
+    const primeTag = p.prime ? `<span class="prime-badge">📦 Prime</span>` : '';
     const deliveryColor = p.delivery.startsWith('Sofort') || p.delivery.startsWith('Morgen') ? 'var(--green)' : 'var(--orange)';
     return `
       <div class="product-card" style="animation-delay: ${index * 0.1}s">
@@ -1435,9 +2143,7 @@
     setTimeout(() => {
       const next = liveProducts.slice(shownCount, shownCount + 3);
       const list = document.getElementById('productList');
-      next.forEach((p, i) => {
-        list.innerHTML += renderProduct(p, i);
-      });
+      next.forEach((p, i) => { list.innerHTML += renderProduct(p, i); });
       shownCount += 3;
       btn.classList.remove('loading-more');
       if (shownCount >= liveProducts.length) {
@@ -1451,23 +2157,17 @@
 
   function showResults(products) {
     liveProducts = products || demoProducts;
-
-    // Hide form elements
     document.querySelector('.progress-wrap').style.display = 'none';
     document.querySelector('.card').style.display = 'none';
 
-    // Build results title
     const name = formData.person || 'deine Person';
     document.getElementById('resultsTitle').textContent = `🎁 Perfekte Geschenke für ${name}!`;
     document.getElementById('resultsSubtitle').textContent = `${formData.anlass} · Budget: ${formData.budget}`;
 
-    // Render first 3 products
     shownCount = 3;
     const list = document.getElementById('productList');
     list.innerHTML = '';
-    liveProducts.slice(0, 3).forEach((p, i) => {
-      list.innerHTML += renderProduct(p, i);
-    });
+    liveProducts.slice(0, 3).forEach((p, i) => { list.innerHTML += renderProduct(p, i); });
 
     document.getElementById('btnMore').style.display = 'flex';
     document.getElementById('btnMoreIcon').textContent = '✨';
@@ -1479,7 +2179,6 @@
   }
 
   function newSearch() {
-    // Reset form
     formData.anlass = '';
     formData.person = '';
     formData.geschlecht = '';
@@ -1492,7 +2191,6 @@
     document.querySelector('.progress-wrap').style.display = 'block';
     document.querySelector('.card').style.display = 'block';
 
-    // Reset all selections
     document.querySelectorAll('.option-btn, .tag-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
     document.getElementById('next-4').disabled = false;
@@ -1546,7 +2244,6 @@
     }
   }
 
-  // Allow step 4 to be skipped
   document.getElementById('next-4').disabled = false;
 </script>
 </body>
