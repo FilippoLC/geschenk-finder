@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎁 Geschenk-Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD93D;
+    --pink: #FF6B9D;
+    --blue: #4ECDC4;
+    --purple: #C77DFF;
+    --orange: #FF8C42;
+    --green: #6BCB77;
+    --bg: #FFF8F0;
+    --card: #ffffff;
+    --text: #2D2D2D;
+    --radius: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Floating background shapes */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255,107,157,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(78,205,196,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(199,125,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .floating-emoji {
+    position: fixed;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: floatAround 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .floating-emoji:nth-child(1) { top: 8%; left: 5%; animation-delay: 0s; font-size: 2.5rem; }
+  .floating-emoji:nth-child(2) { top: 20%; right: 8%; animation-delay: 1s; font-size: 1.8rem; }
+  .floating-emoji:nth-child(3) { top: 60%; left: 3%; animation-delay: 2s; font-size: 2.2rem; }
+  .floating-emoji:nth-child(4) { top: 75%; right: 5%; animation-delay: 3s; font-size: 2rem; }
+  .floating-emoji:nth-child(5) { top: 40%; right: 2%; animation-delay: 1.5s; font-size: 1.5rem; }
+  .floating-emoji:nth-child(6) { bottom: 10%; left: 8%; animation-delay: 0.5s; font-size: 2rem; }
+
+  @keyframes floatAround {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(5deg); }
+    66% { transform: translateY(8px) rotate(-3deg); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: slideDown 0.6s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header .logo {
+    font-size: 3.5rem;
+    margin-bottom: 8px;
+    display: block;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.6rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    color: #888;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 28px;
+    animation: fadeIn 0.5s ease 0.2s both;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .progress-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #E8E8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #aaa;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .progress-dot.active {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(199,125,255,0.4);
+  }
+
+  .progress-dot.done {
+    background: var(--green);
+    color: white;
+  }
+
+  .progress-bar-track {
+    height: 6px;
+    background: #E8E8E8;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Card */
+  .card {
+    background: white;
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    animation: cardIn 0.4s ease;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .step-subtitle {
+    color: #999;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    font-weight: 600;
+  }
+
+  /* Option buttons */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .options-grid.wide {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .option-btn {
+    background: #F8F8F8;
+    border: 2.5px solid transparent;
+    border-radius: 16px;
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .option-btn .emoji {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .option-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+
+  .option-btn.selected {
+    border-color: var(--purple);
+    background: linear-gradient(135deg, rgba(199,125,255,0.1), rgba(78,205,196,0.1));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(199,125,255,0.25);
+  }
+
+  /* Color variants per step */
+  .step[data-color="pink"] .option-btn.selected {
+    border-color: var(--pink);
+    background: linear-gradient(135deg, rgba(255,107,157,0.12), rgba(255,217,61,0.08));
+    box-shadow: 0 6px 20px rgba(255,107,157,0.25);
+  }
+
+  .step[data-color="blue"] .option-btn.selected {
+    border-color: var(--blue);
+    background: linear-gradient(135deg, rgba(78,205,196,0.12), rgba(107,203,119,0.08));
+    box-shadow: 0 6px 20px rgba(78,205,196,0.25);
+  }
+
+  .step[data-color="orange"] .option-btn.selected {
+    border-color: var(--orange);
+    background: linear-gradient(135deg, rgba(255,140,66,0.12), rgba(255,217,61,0.08));
+    box-shadow: 0 6px 20px rgba(255,140,66,0.25);
+  }
+
+  .step[data-color="green"] .option-btn.selected {
+    border-color: var(--green);
+    background: linear-gradient(135deg, rgba(107,203,119,0.12), rgba(78,205,196,0.08));
+    box-shadow: 0 6px 20px rgba(107,203,119,0.25);
+  }
+
+  /* Slider */
+  .slider-wrap {
+    padding: 10px 0 20px;
+  }
+
+  .slider-display {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .slider-value {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: var(--purple);
+  }
+
+  .slider-unit {
+    font-size: 1.2rem;
+    color: #aaa;
+    font-weight: 700;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--purple) 0%, var(--blue) 100%);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--purple);
+    box-shadow: 0 4px 12px rgba(199,125,255,0.4);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #bbb;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  /* Tags (Interests) */
+  .tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .tag-btn {
+    background: #F8F8F8;
+    border: 2.5px solid transparent;
+    border-radius: 50px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tag-btn:hover {
+    transform: scale(1.05);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .tag-btn.selected {
+    border-color: var(--pink);
+    background: linear-gradient(135deg, rgba(255,107,157,0.12), rgba(255,217,61,0.06));
+    box-shadow: 0 4px 12px rgba(255,107,157,0.2);
+  }
+
+  /* Text input */
+  .text-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2.5px solid #E8E8E8;
+    border-radius: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-top: 6px;
+    background: #FAFAFA;
+  }
+
+  .text-input:focus {
+    border-color: var(--purple);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(199,125,255,0.1);
+  }
+
+  /* Navigation */
+  .nav-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .btn-back {
+    background: none;
+    border: 2.5px solid #E8E8E8;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-back:hover {
+    border-color: #ccc;
+    color: #888;
+    transform: translateX(-3px);
+  }
+
+  .btn-next {
+    flex: 1;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 20px rgba(199,125,255,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  .btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(199,125,255,0.45);
+  }
+
+  .btn-next:active {
+    transform: translateY(0);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Submit button */
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--orange), var(--pink), var(--purple));
+    border: none;
+    border-radius: 50px;
+    padding: 18px 32px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 28px rgba(255,107,157,0.4);
+    letter-spacing: 0.5px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 14px 36px rgba(255,107,157,0.5);
+  }
+
+  /* Summary step */
+  .summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #F8F8F8;
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+
+  .summary-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+  }
+
+  .summary-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #bbb;
+  }
+
+  .summary-value {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Loading */
+  .loading-wrap {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .loading-wrap.show { display: block; }
+
+  .loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .loading-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    animation: dotBounce 1.2s ease infinite;
+  }
+
+  .loading-dot:nth-child(1) { background: var(--pink); animation-delay: 0s; }
+  .loading-dot:nth-child(2) { background: var(--purple); animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { background: var(--blue); animation-delay: 0.4s; }
+
+  @keyframes dotBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .loading-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--purple);
+  }
+
+  /* Results page */
+  #resultsPage {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .results-header h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+
+  .results-header p {
+    color: #999;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: cardIn 0.4s ease both;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  .product-card:nth-child(2) { animation-delay: 0.1s; }
+  .product-card:nth-child(3) { animation-delay: 0.2s; }
+
+  .product-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #FFF0F8, #F0F4FF);
+    overflow: hidden;
+  }
+
+  .product-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 16px;
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+  }
+
+  .product-body {
+    padding: 20px;
+  }
+
+  .product-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .product-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .star { color: var(--yellow); font-size: 1rem; }
+  .star.half { opacity: 0.4; }
+
+  .product-rating-text {
+    font-size: 0.82rem;
+    color: #aaa;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  .product-desc {
+    color: #777;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  /* Warum passt das? */
+  .why-box {
+    background: linear-gradient(135deg, rgba(199,125,255,0.08), rgba(78,205,196,0.08));
+    border-left: 3px solid var(--purple);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .why-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+
+  .why-text {
+    font-size: 0.92rem;
+    color: #555;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .product-price {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+
+  .product-price span {
+    font-size: 0.85rem;
+    color: #bbb;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+
+  .btn-amazon {
+    flex: 1;
+    background: linear-gradient(135deg, var(--orange), #FFB347);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(255,140,66,0.35);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn-amazon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,140,66,0.45);
+  }
+
+  .btn-save {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2.5px solid #E8E8E8;
+    background: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .btn-save:hover, .btn-save.saved {
+    border-color: var(--pink);
+    background: rgba(255,107,157,0.08);
+  }
+
+  /* Mehr laden Button */
+  .btn-more {
+    width: 100%;
+    background: white;
+    border: 2.5px dashed #D0D0D0;
+    border-radius: 20px;
+    padding: 18px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-more:hover {
+    border-color: var(--purple);
+    color: var(--purple);
+    background: rgba(199,125,255,0.04);
+  }
+
+  .btn-more.loading-more {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* Neue Suche */
+  .btn-new-search {
+    width: 100%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none;
+    border-radius: 50px;
+    padding: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 20px rgba(199,125,255,0.35);
+    margin-top: 8px;
+  }
+
+  .btn-new-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(199,125,255,0.45);
+  }
+
+  /* Product card inner layout */
+  .product-inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Desktop: horizontal card layout */
+  @media (min-width: 640px) {
+    .product-inner {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .product-img-wrap {
+      width: 220px;
+      min-width: 220px;
+      height: auto;
+      min-height: 220px;
+      border-radius: 0;
+      flex-shrink: 0;
+    }
+
+    #resultsPage {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .results-header h2 { font-size: 2.4rem; }
+  }
+
+  /* Delivery row */
+  .delivery-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    background: #F8FFF8;
+    border-radius: 10px;
+    padding: 8px 12px;
+    flex-wrap: wrap;
+  }
+
+  .delivery-icon { font-size: 1rem; }
+
+  .delivery-text {
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .prime-badge {
+    background: linear-gradient(135deg, #00A8E0, #0066C0);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .card { padding: 24px 20px; }
+    .header h1 { font-size: 2rem; }
+    .options-grid { grid-template-columns: repeat(2, 1fr); }
+    .step-title { font-size: 1.5rem; }
+    .product-img-wrap { height: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating emojis -->
+<div class="floating-emoji">🎁</div>
+<div class="floating-emoji">⭐</div>
+<div class="floating-emoji">🎀</div>
+<div class="floating-emoji">✨</div>
+<div class="floating-emoji">🎊</div>
+<div class="floating-emoji">💝</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="logo">🎁</span>
+    <h1>Geschenk-Finder</h1>
+    <p>Finde das perfekte Geschenk in 30 Sekunden!</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <div class="progress-dot active" id="dot-1">1</div>
+      <div class="progress-dot" id="dot-2">2</div>
+      <div class="progress-dot" id="dot-3">3</div>
+      <div class="progress-dot" id="dot-4">4</div>
+      <div class="progress-dot" id="dot-5">5</div>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width: 10%"></div>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+
+    <!-- Step 1: Anlass -->
+    <div class="step active" id="step-1" data-color="pink">
+      <div class="step-label">Schritt 1 von 5</div>
+      <div class="step-title">Was ist der Anlass? 🎉</div>
+      <div class="step-subtitle">Wähle einen passenden Anlass aus</div>
+      <div class="options-grid">
+        <button class="option-btn" data-value="Geburtstag" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">🎂</span>Geburtstag
+        </button>
+        <button class="option-btn" data-value="Weihnachten" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">🎄</span>Weihnachten
+        </button>
+        <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">💍</span>Hochzeit
+        </button>
+        <button class="option-btn" data-value="Valentinstag" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">💝</span>Valentinstag
+        </button>
+        <button class="option-btn" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">💼</span>Jobwechsel
+        </button>
+        <button class="option-btn" data-value="Abschluss" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">🎓</span>Abschluss
+        </button>
+        <button class="option-btn" data-value="Muttertag" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">💐</span>Muttertag
+        </button>
+        <button class="option-btn" data-value="Anderes" onclick="selectOption(this, 'anlass')">
+          <span class="emoji">🎊</span>Anderes
+        </button>
+      </div>
+      <div class="nav-btns">
+        <div></div>
+        <button class="btn-next" id="next-1" onclick="nextStep(2)" disabled>Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Für wen -->
+    <div class="step" id="step-2" data-color="blue">
+      <div class="step-label">Schritt 2 von 5</div>
+      <div class="step-title">Für wen ist es? 👤</div>
+      <div class="step-subtitle">Wähle die Beziehung zur Person</div>
+      <div class="options-grid">
+        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')">
+          <span class="emoji">💑</span>Partner/in
+        </button>
+        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')">
+          <span class="emoji">👧</span>Kind
+        </button>
+        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')">
+          <span class="emoji">🤝</span>Freund/in
+        </button>
+        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')">
+          <span class="emoji">👫</span>Geschwister
+        </button>
+        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')">
+          <span class="emoji">👴</span>Großeltern
+        </button>
+        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')">
+          <span class="emoji">👨</span>Vater
+        </button>
+        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')">
+          <span class="emoji">👩</span>Mutter
+        </button>
+        <button class="option-btn" data-value="Chef/in" onclick="selectOption(this, 'person')">
+          <span class="emoji">👔</span>Chef/in
+        </button>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="prevStep(1)">← Zurück</button>
+        <button class="btn-next" id="next-2" onclick="currentStep='2'; nextStep(3)" disabled>Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 2b: Geschlecht (nur wenn nötig) -->
+    <div class="step" id="step-2b" data-color="purple">
+      <div class="step-label">Schritt 2b von 5</div>
+      <div class="step-title">Welches Geschlecht? 🌸</div>
+      <div class="step-subtitle">Das hilft uns bei den Empfehlungen</div>
+      <div class="options-grid wide">
+        <button class="option-btn" data-value="Männlich" onclick="selectOption(this, 'geschlecht')">
+          <span class="emoji">👨</span>Männlich
+        </button>
+        <button class="option-btn" data-value="Weiblich" onclick="selectOption(this, 'geschlecht')">
+          <span class="emoji">👩</span>Weiblich
+        </button>
+        <button class="option-btn" data-value="Divers" onclick="selectOption(this, 'geschlecht')">
+          <span class="emoji">🌈</span>Divers
+        </button>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="showStep('step-2'); updateProgress(2)">← Zurück</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- Step 3: Alter -->
+    <div class="step" id="step-3" data-color="orange">
+      <div class="step-label">Schritt 3 von 5</div>
+      <div class="step-title">Wie alt ist die Person? 🎈</div>
+      <div class="step-subtitle">Schiebe den Regler auf das richtige Alter</div>
+      <div class="slider-wrap">
+        <div class="slider-display">
+          <span class="slider-value" id="ageDisplay">25</span>
+          <span class="slider-unit"> Jahre</span>
+        </div>
+        <input type="range" id="ageSlider" min="1" max="99" value="25"
+          oninput="document.getElementById('ageDisplay').textContent = this.value; formData.alter = this.value">
+        <div class="slider-labels"><span>1</span><span>99</span></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="prevStep(2)">← Zurück</button>
+        <button class="btn-next" onclick="nextStep(4)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Interessen -->
+    <div class="step" id="step-4" data-color="green">
+      <div class="step-label">Schritt 4 von 5</div>
+      <div class="step-title">Was sind die Interessen? ✨</div>
+      <div class="step-subtitle">Wähle beliebig viele aus</div>
+      <div class="tags-grid">
+        <button class="tag-btn" data-value="Gaming" onclick="toggleTag(this, 'interessen')">🎮 Gaming</button>
+        <button class="tag-btn" data-value="Kochen" onclick="toggleTag(this, 'interessen')">🍳 Kochen</button>
+        <button class="tag-btn" data-value="Reisen" onclick="toggleTag(this, 'interessen')">✈️ Reisen</button>
+        <button class="tag-btn" data-value="Lesen" onclick="toggleTag(this, 'interessen')">📚 Lesen</button>
+        <button class="tag-btn" data-value="Musik" onclick="toggleTag(this, 'interessen')">🎵 Musik</button>
+        <button class="tag-btn" data-value="Sport" onclick="toggleTag(this, 'interessen')">🏃 Sport</button>
+        <button class="tag-btn" data-value="Kunst" onclick="toggleTag(this, 'interessen')">🎨 Kunst</button>
+        <button class="tag-btn" data-value="Natur" onclick="toggleTag(this, 'interessen')">🌱 Natur</button>
+        <button class="tag-btn" data-value="Fitness" onclick="toggleTag(this, 'interessen')">💪 Fitness</button>
+        <button class="tag-btn" data-value="Mode" onclick="toggleTag(this, 'interessen')">👗 Mode</button>
+        <button class="tag-btn" data-value="Fotografie" onclick="toggleTag(this, 'interessen')">📸 Fotografie</button>
+        <button class="tag-btn" data-value="Film" onclick="toggleTag(this, 'interessen')">🎬 Film</button>
+        <button class="tag-btn" data-value="Technologie" onclick="toggleTag(this, 'interessen')">💻 Technologie</button>
+        <button class="tag-btn" data-value="Yoga" onclick="toggleTag(this, 'interessen')">🧘 Yoga</button>
+        <button class="tag-btn" data-value="Heimwerken" onclick="toggleTag(this, 'interessen')">🔨 Heimwerken</button>
+        <button class="tag-btn" data-value="Backen" onclick="toggleTag(this, 'interessen')">🧁 Backen</button>
+      </div>
+      <div style="margin-top: 16px;">
+        <label style="font-weight: 700; color: #888; font-size: 0.9rem;">Noch etwas hinzufügen?</label>
+        <input type="text" class="text-input" placeholder="z.B. Angeln, Schach, Tanzen..."
+          oninput="formData.interessenExtra = this.value">
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="prevStep(3)">← Zurück</button>
+        <button class="btn-next" id="next-4" onclick="nextStep(5)" disabled>Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Budget -->
+    <div class="step" id="step-5" data-color="pink">
+      <div class="step-label">Schritt 5 von 5</div>
+      <div class="step-title">Was ist dein Budget? 💰</div>
+      <div class="step-subtitle">Wähle eine Preisspanne aus</div>
+      <div class="options-grid wide">
+        <button class="option-btn" data-value="unter 20€" onclick="selectOption(this, 'budget')">
+          <span class="emoji">🪙</span>Unter 20€
+        </button>
+        <button class="option-btn" data-value="20–50€" onclick="selectOption(this, 'budget')">
+          <span class="emoji">💵</span>20 – 50€
+        </button>
+        <button class="option-btn" data-value="50–100€" onclick="selectOption(this, 'budget')">
+          <span class="emoji">💳</span>50 – 100€
+        </button>
+        <button class="option-btn" data-value="100–200€" onclick="selectOption(this, 'budget')">
+          <span class="emoji">💎</span>100 – 200€
+        </button>
+        <button class="option-btn" data-value="über 200€" onclick="selectOption(this, 'budget')">
+          <span class="emoji">👑</span>Über 200€
+        </button>
+        <button class="option-btn" data-value="egal" onclick="selectOption(this, 'budget')">
+          <span class="emoji">🤷</span>Egal!
+        </button>
+      </div>
+
+      <!-- Summary -->
+      <div id="summaryBlock" style="display:none; margin-top: 28px;">
+        <div style="font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #aaa; margin-bottom: 12px;">Deine Angaben:</div>
+        <div class="summary-list" id="summaryList"></div>
+      </div>
+
+      <div class="loading-wrap" id="loadingWrap">
+        <div class="loading-dots">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+        <div class="loading-text">Suche perfekte Geschenke... 🎁</div>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" style="display:none" onclick="submitForm()">
+        🎁 Geschenke finden!
+      </button>
+
+      <div class="nav-btns" id="step5Nav">
+        <button class="btn-back" onclick="prevStep(4)">← Zurück</button>
+        <div></div>
+      </div>
+    </div>
+
+  </div><!-- end card -->
+
+  <!-- Results Page -->
+  <div id="resultsPage">
+    <div class="results-header">
+      <h2 id="resultsTitle">🎁 Perfekte Geschenke gefunden!</h2>
+      <p id="resultsSubtitle">3 Ideen für dich ausgewählt</p>
+    </div>
+
+    <div id="productList"></div>
+
+    <button class="btn-more" id="btnMore" onclick="loadMore()">
+      <span id="btnMoreIcon">✨</span>
+      <span id="btnMoreText">Weitere Artikel anzeigen</span>
+    </button>
+
+    <button class="btn-new-search" onclick="newSearch()">
+      🔍 Neue Suche starten
+    </button>
+  </div>
+
+</div><!-- end container -->
+
+<script>
+  const WEBHOOK_URL = 'https://n8n.srv1570962.hstgr.cloud/webhook/geschenk-finder-v2';
+
+  let liveProducts = [];
+
+  const formData = {
+    anlass: '',
+    person: '',
+    geschlecht: '',
+    alter: 25,
+    interessen: [],
+    interessenExtra: '',
+    budget: ''
+  };
+
+  // Personen die KEINEN Geschlecht-Schritt brauchen
+  const geschlechtNotRequired = ['Mutter', 'Vater'];
+
+  function selectOption(btn, field) {
+    const group = btn.closest('.options-grid');
+    group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    formData[field] = btn.dataset.value;
+
+    // Enable next button
+    const stepId = btn.closest('.step').id;
+    const stepNum = stepId.replace('step-', '');
+    const nextBtn = document.getElementById('next-' + stepNum);
+    if (nextBtn) nextBtn.disabled = false;
+
+    // Show summary + submit on step 5
+    if (field === 'budget') {
+      showSummary();
+    }
+
+    // Geschlecht: sofort weiter zu Schritt 3
+    if (field === 'geschlecht') {
+      setTimeout(() => { showStep('step-3'); updateProgress(3); }, 300);
+    }
+  }
+
+  function toggleTag(btn, field) {
+    btn.classList.toggle('selected');
+    const val = btn.dataset.value;
+    if (btn.classList.contains('selected')) {
+      formData[field].push(val);
+    } else {
+      formData[field] = formData[field].filter(v => v !== val);
+    }
+    // Enable next as soon as at least one is selected (or always allow skip)
+    const nextBtn = document.getElementById('next-4');
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  function nextStep(num) {
+    // Nach Schritt 2: prüfen ob Geschlecht-Schritt nötig
+    if (num === '2b') {
+      showStep('step-2b');
+      updateProgress('2b');
+      return;
+    }
+    if (num === 3 && currentStep === '2') {
+      if (!geschlechtNotRequired.includes(formData.person)) {
+        showStep('step-2b');
+        updateProgress('2b');
+        return;
+      }
+    }
+    showStep('step-' + num);
+    updateProgress(num);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  let currentStep = '1';
+
+  function showStep(id) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    currentStep = id.replace('step-', '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function prevStep(num) {
+    // Zurück von Schritt 3: wenn Geschlecht-Schritt vorhanden war, dahin zurück
+    if (num === 3 && !geschlechtNotRequired.includes(formData.person)) {
+      showStep('step-2b');
+      updateProgress('2b');
+      return;
+    }
+    showStep('step-' + num);
+    updateProgress(num);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(step) {
+    // 2b zählt als zwischen 2 und 3
+    const stepNum = step === '2b' ? 2.5 : parseInt(step);
+    const pct = stepNum <= 1 ? 10 : stepNum <= 2 ? 28 : stepNum <= 2.5 ? 40 : stepNum <= 3 ? 52 : stepNum <= 4 ? 72 : 92;
+    document.getElementById('progressFill').style.width = pct + '%';
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.classList.remove('active', 'done');
+      if (i < stepNum) dot.classList.add('done'), dot.textContent = '✓';
+      else if (i === Math.ceil(stepNum)) dot.classList.add('active'), dot.textContent = i;
+      else dot.textContent = i;
+    }
+  }
+
+  function showSummary() {
+    const block = document.getElementById('summaryBlock');
+    const list = document.getElementById('summaryList');
+    const submitBtn = document.getElementById('submitBtn');
+    const nav = document.getElementById('step5Nav');
+
+    const interests = [...formData.interessen];
+    if (formData.interessenExtra) interests.push(formData.interessenExtra);
+
+    const geschlechtLine = formData.geschlecht
+      ? `<div class="summary-item"><span class="summary-icon">🌸</span><div><div class="summary-label">Geschlecht</div><div class="summary-value">${formData.geschlecht}</div></div></div>`
+      : '';
+
+    list.innerHTML = `
+      <div class="summary-item"><span class="summary-icon">🎉</span><div><div class="summary-label">Anlass</div><div class="summary-value">${formData.anlass}</div></div></div>
+      <div class="summary-item"><span class="summary-icon">👤</span><div><div class="summary-label">Person</div><div class="summary-value">${formData.person}</div></div></div>
+      ${geschlechtLine}
+      <div class="summary-item"><span class="summary-icon">🎈</span><div><div class="summary-label">Alter</div><div class="summary-value">${formData.alter} Jahre</div></div></div>
+      <div class="summary-item"><span class="summary-icon">✨</span><div><div class="summary-label">Interessen</div><div class="summary-value">${interests.length ? interests.join(', ') : 'Keine Angabe'}</div></div></div>
+      <div class="summary-item"><span class="summary-icon">💰</span><div><div class="summary-label">Budget</div><div class="summary-value">${formData.budget}</div></div></div>
+    `;
+
+    block.style.display = 'block';
+    submitBtn.style.display = 'block';
+    nav.style.display = 'flex';
+  }
+
+  // Demo Produkte
+  const demoProducts = [
+    {
+      title: "Lego Icons Botanicals Wildblumenstrauß",
+      desc: "Ein wunderschönes Lego-Set zum Basteln eines nie verwelkenden Blumenstraußes – perfekt für kreative Stunden.",
+      why: "Ideal für kreative Menschen die gerne basteln. Der Strauß hält für immer und erinnert jeden Tag an dich!",
+      price: "49,99",
+      rating: 4.8,
+      reviews: "2.341",
+      img: "https://images-na.ssl-images-amazon.com/images/I/81B2gVs8MmL._AC_SL1500_.jpg",
+      badge: "🏆 Bestseller",
+      delivery: "Morgen, 9. Apr.",
+      prime: true
+    },
+    {
+      title: "Personalisiertes Notizbuch mit Gravur",
+      desc: "Hochwertiges Leder-Notizbuch mit individuellem Namen oder Wunschtext graviert. A5 Format, 200 Seiten.",
+      why: "Ein persönliches Geschenk das zeigt, dass du dir wirklich Gedanken gemacht hast. Perfekt für kreative oder nachdenkliche Menschen.",
+      price: "24,90",
+      rating: 4.6,
+      reviews: "876",
+      img: "https://images-na.ssl-images-amazon.com/images/I/71QCrD8B9EL._AC_SL1500_.jpg",
+      badge: "💝 Beliebt",
+      delivery: "10. – 14. Apr.",
+      prime: false
+    },
+    {
+      title: "Kärcher Hochdruckreiniger K 4 Compact",
+      desc: "Kompakter Hochdruckreiniger mit 1800 Watt, ideal für Terrasse, Auto und Gartenmöbel. Einfach zu verstauen.",
+      why: "Praktisch und nützlich – ein Geschenk das wirklich genutzt wird! Perfekt für alle die ihr Zuhause gerne pflegen.",
+      price: "89,99",
+      rating: 4.5,
+      reviews: "5.102",
+      img: "https://images-na.ssl-images-amazon.com/images/I/61oqNbA5jWL._AC_SL1500_.jpg",
+      badge: "⚡ Top Bewertet",
+      delivery: "Morgen, 9. Apr.",
+      prime: true
+    },
+    {
+      title: "Spotify Geschenkkarte 30€",
+      desc: "Drei Monate Musik ohne Werbung – für alle die Musik lieben. Sofort per E-Mail lieferbar.",
+      why: "Musik begleitet uns überall. Mit dieser Karte schenkst du grenzenlose Unterhaltung für unterwegs, zuhause oder beim Sport!",
+      price: "30,00",
+      rating: 4.9,
+      reviews: "12.450",
+      img: "https://images-na.ssl-images-amazon.com/images/I/51zB3dVCkLL._AC_SL1500_.jpg",
+      badge: "🎵 Digital",
+      delivery: "Sofort per E-Mail",
+      prime: true
+    },
+    {
+      title: "Philips Sonicare Elektrische Zahnbürste",
+      desc: "Schallzahnbürste mit 3 Putzprogrammen, Timer und 2 Wochen Akkulaufzeit. Für strahlend weißere Zähne.",
+      why: "Ein hochwertiges Geschenk das täglich genutzt wird – praktisch, gesundheitsfördernd und dennoch ein echtes Upgrade!",
+      price: "59,95",
+      rating: 4.7,
+      reviews: "3.890",
+      img: "https://images-na.ssl-images-amazon.com/images/I/61MRpFmGMGL._AC_SL1500_.jpg",
+      badge: "✨ Premium",
+      delivery: "Übermorgen, 10. Apr.",
+      prime: true
+    },
+    {
+      title: "Instant Pot Duo 5,7L Multikocher",
+      desc: "7-in-1 Elektrischer Schnellkochtopf, Slow Cooker, Reiskocher, Dämpfer und mehr. Spart Zeit und Energie.",
+      why: "Für alle die gerne kochen aber wenig Zeit haben. Dieses Gerät macht Kochen zum Erlebnis – jedes Gericht gelingt!",
+      price: "79,99",
+      rating: 4.6,
+      reviews: "8.234",
+      img: "https://images-na.ssl-images-amazon.com/images/I/71V1B2r5hVL._AC_SL1500_.jpg",
+      badge: "👨‍🍳 Kochliebhaber",
+      delivery: "11. – 13. Apr.",
+      prime: false
+    }
+  ];
+
+  let shownCount = 3;
+
+  function renderStars(rating) {
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(rating)) html += '<span class="star">★</span>';
+      else if (i - 0.5 <= rating) html += '<span class="star half">★</span>';
+      else html += '<span class="star half">☆</span>';
+    }
+    return html;
+  }
+
+  function renderProduct(p, index) {
+    const primeTag = p.prime
+      ? `<span class="prime-badge">📦 Prime</span>`
+      : '';
+    const deliveryColor = p.delivery.startsWith('Sofort') || p.delivery.startsWith('Morgen') ? 'var(--green)' : 'var(--orange)';
+    return `
+      <div class="product-card" style="animation-delay: ${index * 0.1}s">
+        <div class="product-inner">
+          <div class="product-img-wrap">
+            <img src="${p.img}" alt="${p.title}" onerror="this.src='https://placehold.co/400x300/FFF0F8/FF6B9D?text=🎁'">
+            <div class="product-badge">${p.badge}</div>
+          </div>
+          <div class="product-body">
+            <div class="product-title">${p.title}</div>
+            <div class="product-stars">
+              ${renderStars(p.rating)}
+              <span class="product-rating-text">${p.rating} (${p.reviews})</span>
+            </div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="why-box">
+              <div class="why-label">💡 Warum passt das?</div>
+              <div class="why-text">${p.why}</div>
+            </div>
+            <div class="delivery-row">
+              <span class="delivery-icon">🚚</span>
+              <span class="delivery-text" style="color: ${deliveryColor}">Lieferung: <strong>${p.delivery}</strong></span>
+              ${primeTag}
+            </div>
+            <div class="product-footer">
+              <div class="product-price">${p.price}€ <span>inkl. MwSt.</span></div>
+              <button class="btn-save" onclick="toggleSave(this)" title="Merken">🤍</button>
+              <a class="btn-amazon" href="#" onclick="return false;">🛒 Amazon</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function toggleSave(btn) {
+    btn.classList.toggle('saved');
+    btn.textContent = btn.classList.contains('saved') ? '❤️' : '🤍';
+  }
+
+  function loadMore() {
+    const btn = document.getElementById('btnMore');
+    btn.classList.add('loading-more');
+    document.getElementById('btnMoreIcon').textContent = '⏳';
+    document.getElementById('btnMoreText').textContent = 'Lädt...';
+
+    setTimeout(() => {
+      const next = liveProducts.slice(shownCount, shownCount + 3);
+      const list = document.getElementById('productList');
+      next.forEach((p, i) => {
+        list.innerHTML += renderProduct(p, i);
+      });
+      shownCount += 3;
+      btn.classList.remove('loading-more');
+      if (shownCount >= liveProducts.length) {
+        btn.style.display = 'none';
+      } else {
+        document.getElementById('btnMoreIcon').textContent = '✨';
+        document.getElementById('btnMoreText').textContent = 'Weitere Artikel anzeigen';
+      }
+    }, 1200);
+  }
+
+  function showResults(products) {
+    liveProducts = products || demoProducts;
+
+    // Hide form elements
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.querySelector('.card').style.display = 'none';
+
+    // Build results title
+    const name = formData.person || 'deine Person';
+    document.getElementById('resultsTitle').textContent = `🎁 Perfekte Geschenke für ${name}!`;
+    document.getElementById('resultsSubtitle').textContent = `${formData.anlass} · Budget: ${formData.budget}`;
+
+    // Render first 3 products
+    shownCount = 3;
+    const list = document.getElementById('productList');
+    list.innerHTML = '';
+    liveProducts.slice(0, 3).forEach((p, i) => {
+      list.innerHTML += renderProduct(p, i);
+    });
+
+    document.getElementById('btnMore').style.display = 'flex';
+    document.getElementById('btnMoreIcon').textContent = '✨';
+    document.getElementById('btnMoreText').textContent = 'Weitere Artikel anzeigen';
+    document.getElementById('resultsPage').style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    launchConfetti();
+  }
+
+  function newSearch() {
+    // Reset form
+    formData.anlass = '';
+    formData.person = '';
+    formData.geschlecht = '';
+    formData.alter = 25;
+    formData.interessen = [];
+    formData.interessenExtra = '';
+    formData.budget = '';
+
+    document.getElementById('resultsPage').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'block';
+    document.querySelector('.card').style.display = 'block';
+
+    // Reset all selections
+    document.querySelectorAll('.option-btn, .tag-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+    document.getElementById('next-4').disabled = false;
+    document.getElementById('ageSlider').value = 25;
+    document.getElementById('ageDisplay').textContent = '25';
+    document.getElementById('summaryBlock').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('loadingWrap').classList.remove('show');
+
+    showStep('step-1');
+    updateProgress(1);
+  }
+
+  function submitForm() {
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('step5Nav').style.display = 'none';
+    document.getElementById('summaryBlock').style.display = 'none';
+    document.getElementById('loadingWrap').classList.add('show');
+
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(r => r.json())
+    .then(products => {
+      document.getElementById('loadingWrap').classList.remove('show');
+      showResults(Array.isArray(products) ? products : demoProducts);
+    })
+    .catch(err => {
+      console.error('Webhook-Fehler:', err);
+      document.getElementById('loadingWrap').classList.remove('show');
+      showResults(demoProducts);
+    });
+  }
+
+  function launchConfetti() {
+    const colors = ['#FFD93D', '#FF6B9D', '#4ECDC4', '#C77DFF', '#FF8C42', '#6BCB77'];
+    for (let i = 0; i < 60; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.top = '-20px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (8 + Math.random() * 8) + 'px';
+      piece.style.height = (8 + Math.random() * 8) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animation = `confettiFall ${1.5 + Math.random() * 2}s ease ${Math.random() * 0.5}s forwards`;
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 4000);
+    }
+  }
+
+  // Allow step 4 to be skipped
+  document.getElementById('next-4').disabled = false;
+</script>
+</body>
+</html>
