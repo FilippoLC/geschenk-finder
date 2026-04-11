@@ -1262,7 +1262,7 @@
     max-width: 960px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
   }
 
@@ -1512,12 +1512,18 @@
         <button class="option-btn" data-value="Weihnachten" onclick="selectOption(this, 'anlass')"><span class="emoji">🎄</span>Weihnachten</button>
         <button class="option-btn" data-value="Valentinstag" onclick="selectOption(this, 'anlass')"><span class="emoji">💝</span>Valentinstag</button>
         <button class="option-btn" data-value="Hochzeit" onclick="selectOption(this, 'anlass')"><span class="emoji">💍</span>Hochzeit</button>
-        <button class="option-btn expandable-hidden" data-value="Muttertag" onclick="selectOption(this, 'anlass')"><span class="emoji">💐</span>Muttertag</button>
-        <button class="option-btn expandable-hidden" data-value="Vatertag" onclick="selectOption(this, 'anlass')"><span class="emoji">👔</span>Vatertag</button>
-        <button class="option-btn expandable-hidden" data-value="Abschluss" onclick="selectOption(this, 'anlass')"><span class="emoji">🎓</span>Abschluss</button>
+        <button class="option-btn" data-value="Muttertag" onclick="selectOption(this, 'anlass')"><span class="emoji">💐</span>Muttertag</button>
+        <button class="option-btn" data-value="Vatertag" onclick="selectOption(this, 'anlass')"><span class="emoji">👔</span>Vatertag</button>
+        <button class="option-btn" data-value="Abschluss" onclick="selectOption(this, 'anlass')"><span class="emoji">🎓</span>Abschluss</button>
+        <button class="option-btn" data-value="Anderes" onclick="selectOption(this, 'anlass')"><span class="emoji">🎊</span>Anderes</button>
         <button class="option-btn expandable-hidden" data-value="Jobwechsel" onclick="selectOption(this, 'anlass')"><span class="emoji">💼</span>Jobwechsel</button>
         <button class="option-btn expandable-hidden" data-value="Einzug" onclick="selectOption(this, 'anlass')"><span class="emoji">🏠</span>Einzug</button>
-        <button class="option-btn expandable-hidden" data-value="Anderes" onclick="selectOption(this, 'anlass')"><span class="emoji">🎊</span>Anderes</button>
+        <button class="option-btn expandable-hidden" data-value="Taufe" onclick="selectOption(this, 'anlass')"><span class="emoji">⛪</span>Taufe</button>
+        <button class="option-btn expandable-hidden" data-value="Jubiläum" onclick="selectOption(this, 'anlass')"><span class="emoji">🏆</span>Jubiläum</button>
+        <button class="option-btn expandable-hidden" data-value="Ruhestand" onclick="selectOption(this, 'anlass')"><span class="emoji">🌴</span>Ruhestand</button>
+        <button class="option-btn expandable-hidden" data-value="Ostern" onclick="selectOption(this, 'anlass')"><span class="emoji">🐣</span>Ostern</button>
+        <button class="option-btn expandable-hidden" data-value="Nikolaus" onclick="selectOption(this, 'anlass')"><span class="emoji">🎅</span>Nikolaus</button>
+        <button class="option-btn expandable-hidden" data-value="Dankeschön" onclick="selectOption(this, 'anlass')"><span class="emoji">🙏</span>Dankeschön</button>
       </div>
       <button class="btn-expand" onclick="expandGrid('anlassGrid')">+ Mehr anzeigen</button>
       <div class="nav-btns">
@@ -1536,12 +1542,16 @@
         <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝🏽</span>Freund/in</button>
         <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏽</span>Mutter</button>
         <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏽</span>Vater</button>
-        <button class="option-btn expandable-hidden" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏽</span>Geschwister</button>
-        <button class="option-btn expandable-hidden" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏽</span>Kind</button>
-        <button class="option-btn expandable-hidden" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏽</span>Großeltern</button>
-        <button class="option-btn expandable-hidden" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍💼</span>Kolleg/in</button>
+        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏽</span>Geschwister</button>
+        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏽</span>Kind</button>
+        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏽</span>Großeltern</button>
+        <button class="option-btn" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍💼</span>Kolleg/in</button>
         <button class="option-btn expandable-hidden" data-value="Schwiegermutter/-vater" onclick="selectOption(this, 'person')"><span class="emoji">🧓🏽</span>Schwiegereltern</button>
         <button class="option-btn expandable-hidden" data-value="Nachbar/in" onclick="selectOption(this, 'person')"><span class="emoji">🏠</span>Nachbar/in</button>
+        <button class="option-btn expandable-hidden" data-value="Schwager/Schwägerin" onclick="selectOption(this, 'person')"><span class="emoji">👥</span>Schwager/in</button>
+        <button class="option-btn expandable-hidden" data-value="Patenkind" onclick="selectOption(this, 'person')"><span class="emoji">👶🏽</span>Patenkind</button>
+        <button class="option-btn expandable-hidden" data-value="Lehrer/in" onclick="selectOption(this, 'person')"><span class="emoji">👩🏽‍🏫</span>Lehrer/in</button>
+        <button class="option-btn expandable-hidden" data-value="Onkel/Tante" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍🦱</span>Onkel/Tante</button>
       </div>
       <button class="btn-expand" onclick="expandGrid('personGrid')">+ Mehr anzeigen</button>
       <div class="nav-btns">
@@ -1610,6 +1620,12 @@
         <button class="tag-btn expandable-hidden" data-value="Backen" onclick="toggleTag(this, 'interessen')">🧁 Backen</button>
         <button class="tag-btn expandable-hidden" data-value="Garten" onclick="toggleTag(this, 'interessen')">🌻 Garten</button>
         <button class="tag-btn expandable-hidden" data-value="Tiere" onclick="toggleTag(this, 'interessen')">🐾 Tiere</button>
+        <button class="tag-btn expandable-hidden" data-value="Wellness" onclick="toggleTag(this, 'interessen')">🧖 Wellness</button>
+        <button class="tag-btn expandable-hidden" data-value="Autos" onclick="toggleTag(this, 'interessen')">🚗 Autos</button>
+        <button class="tag-btn expandable-hidden" data-value="Tanzen" onclick="toggleTag(this, 'interessen')">💃 Tanzen</button>
+        <button class="tag-btn expandable-hidden" data-value="Schmuck" onclick="toggleTag(this, 'interessen')">💎 Schmuck</button>
+        <button class="tag-btn expandable-hidden" data-value="Brettspiele" onclick="toggleTag(this, 'interessen')">🎲 Brettspiele</button>
+        <button class="tag-btn expandable-hidden" data-value="Astronomie" onclick="toggleTag(this, 'interessen')">🔭 Astronomie</button>
       </div>
       <button class="btn-expand" onclick="expandGrid('interessenGrid')">+ Mehr anzeigen</button>
       <div style="margin-top: 16px;">
@@ -1890,10 +1906,6 @@
 <!-- ==================== FOOTER ==================== -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <h3>🎁 Geschenk-Finder</h3>
-      <p>Finde das perfekte Geschenk in Sekunden. KI-gestützt, persönlich und mit Liebe gemacht. Gemeinsam machen wir die Welt ein bisschen glücklicher.</p>
-    </div>
     <div class="footer-links">
       <h4>Navigation</h4>
       <a onclick="navigateTo('home')">Startseite</a>
