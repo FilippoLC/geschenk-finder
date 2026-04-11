@@ -1287,8 +1287,8 @@
     margin-bottom: 12px;
   }
 
-  .footer-links a {
-    display: block;
+  .footer-links a, .footer-inner a {
+    display: inline;
     color: #888;
     text-decoration: none;
     font-weight: 600;
@@ -1298,7 +1298,7 @@
     cursor: pointer;
   }
 
-  .footer-links a:hover { color: var(--purple); }
+  .footer-links a:hover, .footer-inner a:hover { color: var(--purple); }
 
   .footer-bottom {
     max-width: 960px;
@@ -1526,6 +1526,11 @@
         <button class="option-btn expandable-hidden" data-value="Dankeschön" onclick="selectOption(this, 'anlass')"><span class="emoji">🙏</span>Dankeschön</button>
       </div>
       <button class="btn-expand" onclick="expandGrid('anlassGrid')">+ Mehr anzeigen</button>
+      <div id="anlassGridExtra" style="display:none; margin-top: 12px;">
+        <label style="font-weight: 700; color: #888; font-size: 0.9rem;">Eigener Anlass?</label>
+        <input type="text" class="text-input" placeholder="z.B. Firmenevent, Verlobung..."
+          oninput="if(this.value) { formData.anlass = this.value; document.getElementById('next-1').disabled = false; document.querySelectorAll('#anlassGrid .option-btn').forEach(b=>b.classList.remove('selected')); }">
+      </div>
       <div class="nav-btns">
         <div></div>
         <button class="btn-next" id="next-1" onclick="nextStep(2)" disabled>Weiter →</button>
@@ -1538,22 +1543,29 @@
       <div class="step-title">Für wen ist es? 👤</div>
       <div class="step-subtitle">Wähle die Beziehung zur Person</div>
       <div class="options-grid expandable" id="personGrid">
-        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑🏽</span>Partner/in</button>
-        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝🏽</span>Freund/in</button>
-        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏽</span>Mutter</button>
-        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏽</span>Vater</button>
-        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏽</span>Geschwister</button>
-        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏽</span>Kind</button>
-        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏽</span>Großeltern</button>
-        <button class="option-btn" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍💼</span>Kolleg/in</button>
-        <button class="option-btn expandable-hidden" data-value="Schwiegermutter/-vater" onclick="selectOption(this, 'person')"><span class="emoji">🧓🏽</span>Schwiegereltern</button>
+        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑🏼</span>Partner/in</button>
+        <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝🏼</span>Freund/in</button>
+        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏼</span>Mutter</button>
+        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏼</span>Vater</button>
+        <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏼</span>Geschwister</button>
+        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏼</span>Kind</button>
+        <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏼</span>Großeltern</button>
+        <button class="option-btn" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏼‍💼</span>Kolleg/in</button>
+        <button class="option-btn expandable-hidden" data-value="Schwiegermutter/-vater" onclick="selectOption(this, 'person')"><span class="emoji">🧓🏼</span>Schwiegereltern</button>
         <button class="option-btn expandable-hidden" data-value="Nachbar/in" onclick="selectOption(this, 'person')"><span class="emoji">🏠</span>Nachbar/in</button>
         <button class="option-btn expandable-hidden" data-value="Schwager/Schwägerin" onclick="selectOption(this, 'person')"><span class="emoji">👥</span>Schwager/in</button>
-        <button class="option-btn expandable-hidden" data-value="Patenkind" onclick="selectOption(this, 'person')"><span class="emoji">👶🏽</span>Patenkind</button>
-        <button class="option-btn expandable-hidden" data-value="Lehrer/in" onclick="selectOption(this, 'person')"><span class="emoji">👩🏽‍🏫</span>Lehrer/in</button>
-        <button class="option-btn expandable-hidden" data-value="Onkel/Tante" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏽‍🦱</span>Onkel/Tante</button>
+        <button class="option-btn expandable-hidden" data-value="Patenkind" onclick="selectOption(this, 'person')"><span class="emoji">👶🏼</span>Patenkind</button>
+        <button class="option-btn expandable-hidden" data-value="Lehrer/in" onclick="selectOption(this, 'person')"><span class="emoji">👩🏼‍🏫</span>Lehrer/in</button>
+        <button class="option-btn expandable-hidden" data-value="Onkel/Tante" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏼‍🦱</span>Onkel/Tante</button>
+        <button class="option-btn expandable-hidden" data-value="Chef/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏼‍💻</span>Chef/in</button>
+        <button class="option-btn expandable-hidden" data-value="Feind/in" onclick="selectOption(this, 'person')"><span class="emoji">😈</span>Feind/in</button>
       </div>
       <button class="btn-expand" onclick="expandGrid('personGrid')">+ Mehr anzeigen</button>
+      <div id="personGridExtra" style="display:none; margin-top: 12px;">
+        <label style="font-weight: 700; color: #888; font-size: 0.9rem;">Andere Person?</label>
+        <input type="text" class="text-input" placeholder="z.B. Trainer, Vermieter..."
+          oninput="if(this.value) { formData.person = this.value; document.getElementById('next-2').disabled = false; document.querySelectorAll('#personGrid .option-btn').forEach(b=>b.classList.remove('selected')); }">
+      </div>
       <div class="nav-btns">
         <button class="btn-back" onclick="prevStep(1)">← Zurück</button>
         <button class="btn-next" id="next-2" onclick="currentStep='2'; nextStep(3)" disabled>Weiter →</button>
@@ -1565,10 +1577,25 @@
       <div class="step-label">Schritt 2b von 5</div>
       <div class="step-title">Welches Geschlecht? 🌸</div>
       <div class="step-subtitle">Das hilft uns bei den Empfehlungen</div>
-      <div class="options-grid wide">
+      <div class="options-grid expandable" id="geschlechtGrid">
         <button class="option-btn" data-value="Männlich" onclick="selectOption(this, 'geschlecht')"><span class="emoji">👨</span>Männlich</button>
         <button class="option-btn" data-value="Weiblich" onclick="selectOption(this, 'geschlecht')"><span class="emoji">👩</span>Weiblich</button>
         <button class="option-btn" data-value="Divers" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🌈</span>Divers</button>
+        <button class="option-btn" data-value="Nicht-binär" onclick="selectOption(this, 'geschlecht')"><span class="emoji">⚧️</span>Nicht-binär</button>
+        <button class="option-btn expandable-hidden" data-value="Transmann" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🏳️‍⚧️</span>Transmann</button>
+        <button class="option-btn expandable-hidden" data-value="Transfrau" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🏳️‍⚧️</span>Transfrau</button>
+        <button class="option-btn expandable-hidden" data-value="Genderfluid" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🌊</span>Genderfluid</button>
+        <button class="option-btn expandable-hidden" data-value="Agender" onclick="selectOption(this, 'geschlecht')"><span class="emoji">✨</span>Agender</button>
+        <button class="option-btn expandable-hidden" data-value="Intersex" onclick="selectOption(this, 'geschlecht')"><span class="emoji">⚥</span>Intersex</button>
+        <button class="option-btn expandable-hidden" data-value="Keine Angabe" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🤷</span>Keine Angabe</button>
+        <button class="option-btn expandable-hidden" data-value="Zwei-Geist" onclick="selectOption(this, 'geschlecht')"><span class="emoji">🪶</span>Zwei-Geist</button>
+        <button class="option-btn expandable-hidden" data-value="Demigender" onclick="selectOption(this, 'geschlecht')"><span class="emoji">💫</span>Demigender</button>
+      </div>
+      <button class="btn-expand" onclick="expandGrid('geschlechtGrid')">+ Mehr anzeigen</button>
+      <div id="geschlechtGridExtra" style="display:none; margin-top: 12px;">
+        <label style="font-weight: 700; color: #888; font-size: 0.9rem;">Eigene Angabe?</label>
+        <input type="text" class="text-input" placeholder="Eigene Bezeichnung eingeben..."
+          oninput="if(this.value) { formData.geschlecht = this.value; document.querySelectorAll('#geschlechtGrid .option-btn').forEach(b=>b.classList.remove('selected')); }">
       </div>
       <div class="nav-btns">
         <button class="btn-back" onclick="showStep('step-2'); updateProgress(2)">← Zurück</button>
@@ -1913,18 +1940,16 @@
 
 <!-- ==================== FOOTER ==================== -->
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-links">
-      <h4>Navigation</h4>
-      <a onclick="navigateTo('home')">Startseite</a>
-      <a onclick="navigateTo('about')">Unsere Mission</a>
-      <a onclick="navigateTo('shop')">Shop</a>
-    </div>
-    <div class="footer-links">
-      <h4>Rechtliches</h4>
-      <a onclick="navigateTo('impressum')">Impressum</a>
-      <a onclick="navigateTo('datenschutz')">Datenschutz</a>
-    </div>
+  <div class="footer-inner" style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+    <a onclick="navigateTo('home')">Startseite</a>
+    <span style="color: #ddd;">|</span>
+    <a onclick="navigateTo('about')">Unsere Mission</a>
+    <span style="color: #ddd;">|</span>
+    <a onclick="navigateTo('shop')">Shop</a>
+    <span style="color: #ddd;">|</span>
+    <a onclick="navigateTo('impressum')">Impressum</a>
+    <span style="color: #ddd;">|</span>
+    <a onclick="navigateTo('datenschutz')">Datenschutz</a>
   </div>
   <div class="footer-bottom">
     &copy; 2026 Geschenk-Finder. Alle Rechte vorbehalten. Mit 💛 gemacht.
@@ -2025,6 +2050,8 @@
     if (expandBtn && expandBtn.classList.contains('btn-expand')) {
       expandBtn.classList.add('hidden');
     }
+    const extraInput = document.getElementById(gridId + 'Extra');
+    if (extraInput) extraInput.style.display = 'block';
   }
 
   // ========== AUTO-SCROLL ==========
@@ -2069,6 +2096,7 @@
     }
     const nextBtn = document.getElementById('next-4');
     if (nextBtn) nextBtn.disabled = false;
+    scrollToNext(btn);
   }
 
   function nextStep(num) {
