@@ -804,8 +804,7 @@
   /* Body lock when overlay is visible */
   body.overlay-active {
     overflow: hidden;
-    position: fixed;
-    width: 100%;
+    height: 100vh;
   }
 
   /* Floating emojis animation */
@@ -2610,12 +2609,11 @@
   }
 
   function submitForm() {
-    const scrollY = window.scrollY;
     document.getElementById('submitBtn').style.display = 'none';
     document.getElementById('step5Nav').style.display = 'none';
     document.getElementById('summaryBlock').style.display = 'none';
+    window.scrollTo({ top: 0 });
     document.body.classList.add('overlay-active');
-    document.body.style.top = `-${scrollY}px`;
     document.getElementById('loadingOverlay').classList.add('show');
 
     fetch(WEBHOOK_URL, {
@@ -2626,14 +2624,12 @@
     .then(r => r.json())
     .then(products => {
       document.body.classList.remove('overlay-active');
-      document.body.style.top = '';
       document.getElementById('loadingOverlay').classList.remove('show');
       showResults(Array.isArray(products) ? products : demoProducts);
     })
     .catch(err => {
       console.error('Webhook-Fehler:', err);
       document.body.classList.remove('overlay-active');
-      document.body.style.top = '';
       document.getElementById('loadingOverlay').classList.remove('show');
       showResults(demoProducts);
     });
