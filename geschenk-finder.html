@@ -2077,7 +2077,9 @@
     const navBtns = step.querySelector('.nav-btns');
     if (navBtns) {
       setTimeout(() => {
-        navBtns.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        const rect = navBtns.getBoundingClientRect();
+        const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 16;
+        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
       }, 150);
     }
   }
@@ -2112,7 +2114,9 @@
       formData[field] = formData[field].filter(v => v !== val);
     }
     const nextBtn = document.getElementById('next-4');
+    const wasDisabled = nextBtn && nextBtn.disabled;
     if (nextBtn) nextBtn.disabled = false;
+    if (wasDisabled) scrollToNext(btn);
   }
 
   function nextStep(num) {
