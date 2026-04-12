@@ -365,6 +365,7 @@
   .option-btn .emoji {
     font-size: 1.8rem;
     line-height: 1;
+    pointer-events: none;
   }
 
   .option-btn:hover {
@@ -800,18 +801,58 @@
     50% { opacity: 0.7; }
   }
 
-  /* Video placeholder */
+  /* Body lock when overlay is visible */
+  body.overlay-active {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+
+  /* Floating emojis animation */
+  .loading-floating {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .floating-emoji {
+    position: absolute;
+    font-size: 1.8rem;
+    opacity: 0;
+    animation: floatUp 4s ease-in-out infinite;
+  }
+  .floating-emoji:nth-child(1) { left: 8%; animation-delay: 0s; }
+  .floating-emoji:nth-child(2) { left: 22%; animation-delay: 0.8s; }
+  .floating-emoji:nth-child(3) { left: 38%; animation-delay: 1.6s; }
+  .floating-emoji:nth-child(4) { left: 55%; animation-delay: 0.4s; }
+  .floating-emoji:nth-child(5) { left: 70%; animation-delay: 1.2s; }
+  .floating-emoji:nth-child(6) { left: 85%; animation-delay: 2s; }
+  .floating-emoji:nth-child(7) { left: 15%; animation-delay: 2.5s; }
+  .floating-emoji:nth-child(8) { left: 48%; animation-delay: 3s; }
+  .floating-emoji:nth-child(9) { left: 78%; animation-delay: 1.8s; }
+  .floating-emoji:nth-child(10) { left: 92%; animation-delay: 0.6s; }
+
+  @keyframes floatUp {
+    0% { bottom: -10%; opacity: 0; transform: scale(0.5) rotate(0deg); }
+    20% { opacity: 0.7; }
+    80% { opacity: 0.5; }
+    100% { bottom: 105%; opacity: 0; transform: scale(1.2) rotate(20deg); }
+  }
+
+  /* Video placeholder (hidden until video available) */
   .video-placeholder {
-    width: 280px;
-    height: 158px;
+    width: 300px;
+    height: 170px;
     border-radius: 16px;
-    background: rgba(255,255,255,0.08);
-    border: 2px dashed rgba(255,255,255,0.15);
-    margin-top: 32px;
-    display: flex;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 40px;
+    display: none; /* hidden until video is added */
     align-items: center;
     justify-content: center;
-    color: rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.2);
     font-size: 0.8rem;
   }
 
@@ -1696,12 +1737,12 @@
       <div class="step-title">Für wen ist es? 👤</div>
       <div class="step-subtitle">Wähle die Beziehung zur Person</div>
       <div class="options-grid expandable" id="personGrid">
-        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑🏼</span>Partner/in</button>
+        <button class="option-btn" data-value="Partner/in" onclick="selectOption(this, 'person')"><span class="emoji">💑</span>Partner/in</button>
         <button class="option-btn" data-value="Freund/in" onclick="selectOption(this, 'person')"><span class="emoji">🤝🏼</span>Freund/in</button>
-        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏼</span>Mutter</button>
-        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏼</span>Vater</button>
+        <button class="option-btn" data-value="Mutter" onclick="selectOption(this, 'person')"><span class="emoji">👩🏼‍🦱</span>Mutter</button>
+        <button class="option-btn" data-value="Vater" onclick="selectOption(this, 'person')"><span class="emoji">👨🏼‍🦱</span>Vater</button>
         <button class="option-btn" data-value="Geschwister" onclick="selectOption(this, 'person')"><span class="emoji">👫🏼</span>Geschwister</button>
-        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏼</span>Kind</button>
+        <button class="option-btn" data-value="Kind" onclick="selectOption(this, 'person')"><span class="emoji">👧🏼‍</span>Kind</button>
         <button class="option-btn" data-value="Großeltern" onclick="selectOption(this, 'person')"><span class="emoji">👴🏼</span>Großeltern</button>
         <button class="option-btn" data-value="Kolleg/in" onclick="selectOption(this, 'person')"><span class="emoji">🧑🏼‍💼</span>Kolleg/in</button>
         <button class="option-btn expandable-hidden" data-value="Schwiegermutter/-vater" onclick="selectOption(this, 'person')"><span class="emoji">🧓🏼</span>Schwiegereltern</button>
@@ -1887,9 +1928,18 @@
     <div class="loading-overlay-text">Suche perfekte Geschenke...</div>
     <div class="loading-overlay-sub">Unsere KI durchsucht tausende Ideen für dich</div>
     <div class="loading-progress-bar"><div class="loading-progress-fill"></div></div>
-    <div class="video-placeholder" id="videoPlaceholder">
-      <!-- Hier kommt später ein Werbevideo rein -->
-      🎬 Werbefläche
+    <div class="video-placeholder" id="videoPlaceholder"></div>
+    <div class="loading-floating">
+      <span class="floating-emoji">🎁</span>
+      <span class="floating-emoji">✨</span>
+      <span class="floating-emoji">🎀</span>
+      <span class="floating-emoji">💝</span>
+      <span class="floating-emoji">🎊</span>
+      <span class="floating-emoji">⭐</span>
+      <span class="floating-emoji">🎉</span>
+      <span class="floating-emoji">💫</span>
+      <span class="floating-emoji">🌟</span>
+      <span class="floating-emoji">🎈</span>
     </div>
   </div>
 
@@ -2551,6 +2601,8 @@
     document.getElementById('ageDisplay').textContent = '25';
     document.getElementById('summaryBlock').style.display = 'none';
     document.getElementById('submitBtn').style.display = 'none';
+    document.body.classList.remove('overlay-active');
+    document.body.style.top = '';
     document.getElementById('loadingOverlay').classList.remove('show');
 
     showStep('step-1');
@@ -2558,9 +2610,12 @@
   }
 
   function submitForm() {
+    const scrollY = window.scrollY;
     document.getElementById('submitBtn').style.display = 'none';
     document.getElementById('step5Nav').style.display = 'none';
     document.getElementById('summaryBlock').style.display = 'none';
+    document.body.classList.add('overlay-active');
+    document.body.style.top = `-${scrollY}px`;
     document.getElementById('loadingOverlay').classList.add('show');
 
     fetch(WEBHOOK_URL, {
@@ -2570,11 +2625,15 @@
     })
     .then(r => r.json())
     .then(products => {
+      document.body.classList.remove('overlay-active');
+      document.body.style.top = '';
       document.getElementById('loadingOverlay').classList.remove('show');
       showResults(Array.isArray(products) ? products : demoProducts);
     })
     .catch(err => {
       console.error('Webhook-Fehler:', err);
+      document.body.classList.remove('overlay-active');
+      document.body.style.top = '';
       document.getElementById('loadingOverlay').classList.remove('show');
       showResults(demoProducts);
     });
