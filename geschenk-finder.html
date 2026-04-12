@@ -661,7 +661,159 @@
     padding: 20px 0;
   }
 
-  .loading-wrap.show { display: block; }
+  .loading-wrap.show { display: flex; flex-direction: column; align-items: center; }
+
+  /* Full-screen loading overlay */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease;
+  }
+  .loading-overlay.show { display: flex; }
+
+  .loading-gift-box {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 32px;
+  }
+  .loading-gift-body {
+    width: 100px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    box-shadow: 0 8px 32px rgba(199, 125, 255, 0.3);
+  }
+  .loading-gift-lid {
+    width: 120px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--purple), #a855f7);
+    border-radius: 8px 8px 4px 4px;
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    animation: lidBounce 2s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+  .loading-gift-ribbon-v {
+    width: 16px;
+    height: 70px;
+    background: var(--yellow);
+    position: absolute;
+    bottom: 0;
+    left: 52px;
+    border-radius: 2px;
+  }
+  .loading-gift-ribbon-h {
+    width: 100px;
+    height: 16px;
+    background: var(--yellow);
+    position: absolute;
+    bottom: 27px;
+    left: 10px;
+    border-radius: 2px;
+  }
+  .loading-gift-bow {
+    position: absolute;
+    bottom: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    animation: lidBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes lidBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-15px) rotate(-3deg); }
+    60% { transform: translateY(-8px) rotate(2deg); }
+  }
+
+  .loading-sparkles {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .loading-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: sparkleFloat 3s ease-in-out infinite;
+  }
+  .loading-sparkle:nth-child(1) { background: var(--yellow); top: 10%; left: 10%; animation-delay: 0s; }
+  .loading-sparkle:nth-child(2) { background: var(--pink); top: 5%; left: 80%; animation-delay: 0.5s; }
+  .loading-sparkle:nth-child(3) { background: var(--blue); top: 85%; left: 15%; animation-delay: 1s; }
+  .loading-sparkle:nth-child(4) { background: var(--purple); top: 80%; left: 85%; animation-delay: 1.5s; }
+  .loading-sparkle:nth-child(5) { background: var(--green); top: 50%; left: 5%; animation-delay: 0.7s; }
+  .loading-sparkle:nth-child(6) { background: var(--orange); top: 45%; left: 95%; animation-delay: 1.2s; }
+
+  @keyframes sparkleFloat {
+    0%, 100% { opacity: 0; transform: scale(0) translateY(0); }
+    50% { opacity: 1; transform: scale(1.5) translateY(-10px); }
+  }
+
+  .loading-overlay-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 8px;
+    animation: textPulse 2s ease-in-out infinite;
+  }
+  .loading-overlay-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 32px;
+  }
+  .loading-progress-bar {
+    width: 200px;
+    height: 6px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .loading-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--yellow), var(--pink), var(--purple));
+    border-radius: 3px;
+    animation: progressSlide 3s ease-in-out infinite;
+  }
+  @keyframes progressSlide {
+    0% { width: 0%; }
+    50% { width: 80%; }
+    100% { width: 100%; }
+  }
+  @keyframes textPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Video placeholder */
+  .video-placeholder {
+    width: 280px;
+    height: 158px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 2px dashed rgba(255,255,255,0.15);
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 0.8rem;
+  }
 
   .loading-dots {
     display: flex;
@@ -1714,6 +1866,32 @@
 
   </div><!-- end card -->
 
+  <!-- Loading Overlay (fullscreen, Platzhalter für Werbevideo) -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-gift-box">
+      <div class="loading-sparkles">
+        <div class="loading-sparkle"></div>
+        <div class="loading-sparkle"></div>
+        <div class="loading-sparkle"></div>
+        <div class="loading-sparkle"></div>
+        <div class="loading-sparkle"></div>
+        <div class="loading-sparkle"></div>
+      </div>
+      <div class="loading-gift-bow">🎀</div>
+      <div class="loading-gift-lid"></div>
+      <div class="loading-gift-ribbon-v"></div>
+      <div class="loading-gift-ribbon-h"></div>
+      <div class="loading-gift-body"></div>
+    </div>
+    <div class="loading-overlay-text">Suche perfekte Geschenke...</div>
+    <div class="loading-overlay-sub">Unsere KI durchsucht tausende Ideen für dich</div>
+    <div class="loading-progress-bar"><div class="loading-progress-fill"></div></div>
+    <div class="video-placeholder" id="videoPlaceholder">
+      <!-- Hier kommt später ein Werbevideo rein -->
+      🎬 Werbefläche
+    </div>
+  </div>
+
   <!-- Results Page -->
   <div id="resultsPage">
     <div class="results-header">
@@ -2137,7 +2315,21 @@
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     currentStep = id.replace('step-', '');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (id === 'step-3') {
+      // Alter-Schritt: scroll so dass Weiter-Button sichtbar ist
+      setTimeout(() => {
+        const step = document.getElementById('step-3');
+        const navBtns = step.querySelector('.nav-btns');
+        if (navBtns) {
+          const rect = navBtns.getBoundingClientRect();
+          const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 16;
+          window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
+        }
+      }, 150);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   function prevStep(num) {
@@ -2358,7 +2550,7 @@
     document.getElementById('ageDisplay').textContent = '25';
     document.getElementById('summaryBlock').style.display = 'none';
     document.getElementById('submitBtn').style.display = 'none';
-    document.getElementById('loadingWrap').classList.remove('show');
+    document.getElementById('loadingOverlay').classList.remove('show');
 
     showStep('step-1');
     updateProgress(1);
@@ -2368,7 +2560,7 @@
     document.getElementById('submitBtn').style.display = 'none';
     document.getElementById('step5Nav').style.display = 'none';
     document.getElementById('summaryBlock').style.display = 'none';
-    document.getElementById('loadingWrap').classList.add('show');
+    document.getElementById('loadingOverlay').classList.add('show');
 
     fetch(WEBHOOK_URL, {
       method: 'POST',
@@ -2377,12 +2569,12 @@
     })
     .then(r => r.json())
     .then(products => {
-      document.getElementById('loadingWrap').classList.remove('show');
+      document.getElementById('loadingOverlay').classList.remove('show');
       showResults(Array.isArray(products) ? products : demoProducts);
     })
     .catch(err => {
       console.error('Webhook-Fehler:', err);
-      document.getElementById('loadingWrap').classList.remove('show');
+      document.getElementById('loadingOverlay').classList.remove('show');
       showResults(demoProducts);
     });
   }
