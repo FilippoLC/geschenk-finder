@@ -2211,7 +2211,7 @@
 </div>
 
 <script>
-  const WEBHOOK_URL = 'https://n8n.srv1570962.hstgr.cloud/webhook/geschenk-finder-v2';
+  const WEBHOOK_URL = 'https://n8n.srv1570962.hstgr.cloud/webhook/finder-2000';
 
   let liveProducts = [];
 
@@ -2523,7 +2523,7 @@
             <div class="product-footer">
               <div class="product-price">${p.price}€ <span>inkl. MwSt.</span></div>
               <button class="btn-save" onclick="toggleSave(this)" title="Merken">🤍</button>
-              <a class="btn-amazon" href="#" onclick="return false;">🛒 Amazon</a>
+              <a class="btn-amazon" href="${p.amazonUrl || '#'}" target="_blank" rel="noopener noreferrer nofollow">🛒 Amazon</a>
             </div>
           </div>
         </div>
@@ -2622,10 +2622,11 @@
       body: JSON.stringify(formData)
     })
     .then(r => r.json())
-    .then(products => {
+    .then(data => {
       document.body.classList.remove('overlay-active');
       document.getElementById('loadingOverlay').classList.remove('show');
-      showResults(Array.isArray(products) ? products : demoProducts);
+      const products = Array.isArray(data) ? data : (data.products || demoProducts);
+      showResults(products);
     })
     .catch(err => {
       console.error('Webhook-Fehler:', err);
