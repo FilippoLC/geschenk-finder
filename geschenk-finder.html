@@ -2074,10 +2074,10 @@
   // ========== AUTO-SCROLL ==========
   function scrollToNext(btn) {
     const step = btn.closest('.step');
-    const nextBtn = step.querySelector('.btn-next') || step.querySelector('.nav-btns');
-    if (nextBtn) {
+    const navBtns = step.querySelector('.nav-btns');
+    if (navBtns) {
       setTimeout(() => {
-        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        navBtns.scrollIntoView({ behavior: 'smooth', block: 'end' });
       }, 150);
     }
   }
