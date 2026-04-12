@@ -1726,6 +1726,7 @@
       <span id="btnMoreText">Weitere Artikel anzeigen</span>
     </button>
     <button class="btn-new-search" onclick="newSearch()">🔍 Neue Suche starten</button>
+    <p style="text-align: center; font-size: 0.75rem; color: #aaa; margin-top: 16px; line-height: 1.5;">Die Geschenkempfehlungen werden mit Hilfe von Künstlicher Intelligenz erstellt und stellen keine Garantie dar.<br>* Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.</p>
   </div>
 
 </div>
@@ -1855,6 +1856,10 @@
 
       <h2>Affiliate-Hinweis</h2>
       <p>Diese Webseite enthält sogenannte Affiliate-Links. Wenn du über diese Links Produkte kaufst, erhalten wir eine kleine Provision. Der Preis für dich ändert sich dadurch nicht. Diese Einnahmen helfen uns, den Geschenk-Finder kostenfrei anzubieten und weiterzuentwickeln.</p>
+      <p><strong>Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.</strong></p>
+
+      <h2>Hinweis zur Künstlichen Intelligenz</h2>
+      <p>Die auf dieser Webseite angezeigten Geschenkempfehlungen werden mit Hilfe von Künstlicher Intelligenz (KI) generiert. Die Empfehlungen stellen keine Kaufberatung dar und erheben keinen Anspruch auf Vollständigkeit oder Richtigkeit. Die endgültige Kaufentscheidung liegt beim Nutzer.</p>
     </div>
   </div>
 </div>
@@ -1879,7 +1884,7 @@
       Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen (z.B. durch Eingabe in das Geschenk-Finder Formular). Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).</p>
 
       <h2>2. Hosting</h2>
-      <p>Diese Website wird bei Hostinger International Ltd. gehostet. Details entnehmen Sie der Datenschutzerklärung von Hostinger.</p>
+      <p>Diese Website wird auf einem Virtual Private Server (VPS) bei Hostinger International Ltd., Švitrigailos str. 34, Vilnius 03230, Litauen gehostet. Beim Besuch unserer Website erfasst Hostinger automatisch Informationen in Server-Log-Dateien, die Ihr Browser übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen entnehmen Sie der Datenschutzerklärung von Hostinger: https://www.hostinger.de/datenschutzrichtlinie</p>
 
       <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
       <h3>Datenschutz</h3>
@@ -1916,8 +1921,12 @@
       <h3>Geschenk-Finder Formular</h3>
       <p>Wenn Sie den Geschenk-Finder nutzen, werden die von Ihnen eingegebenen Daten (Anlass, Person, Geschlecht, Alter, Interessen, Budget) an unseren Server übermittelt und zur Generierung personalisierter Geschenkempfehlungen verarbeitet. Diese Daten werden nicht dauerhaft gespeichert und nach der Bearbeitung Ihrer Anfrage gelöscht.</p>
 
+      <h3>Einsatz von Künstlicher Intelligenz</h3>
+      <p>Zur Erstellung personalisierter Geschenkempfehlungen werden die von Ihnen im Formular eingegebenen Daten an den KI-Dienst OpenAI (OpenAI, L.L.C., 3180 18th Street, San Francisco, CA 94110, USA) übermittelt. OpenAI verarbeitet diese Daten ausschließlich zur Generierung der Empfehlungen. Es werden keine personenbezogenen Daten wie Name, E-Mail oder IP-Adresse an OpenAI übermittelt — lediglich die Formularangaben (Anlass, Person, Geschlecht, Alter, Interessen, Budget). Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch Nutzung des Formulars). Weitere Informationen: https://openai.com/privacy</p>
+
       <h2>5. Affiliate-Programme</h2>
-      <p>Diese Website nimmt am Amazon Partnerprogramm teil. Durch die Platzierung von Affiliate-Links verdienen wir an qualifizierten Käufen. Amazon setzt dabei eigene Cookies ein, um die Herkunft von Bestellungen nachvollziehen zu können. Weitere Informationen finden Sie in der Datenschutzerklärung von Amazon.</p>
+      <p>Diese Website nimmt am Amazon Partnerprogramm (Amazon PartnerNet) teil. Als Amazon-Partner verdienen wir an qualifizierten Verkäufen. Wenn Sie auf einen Affiliate-Link klicken und bei Amazon einkaufen, erhalten wir eine Provision. Der Preis für Sie ändert sich dadurch nicht.</p>
+      <p>Amazon setzt dabei eigene Cookies ein (Laufzeit: 24 Stunden, bzw. 90 Tage wenn ein Produkt in den Warenkorb gelegt wird), um die Herkunft von Bestellungen nachvollziehen zu können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung über Cookie-Banner). Weitere Informationen finden Sie in der Datenschutzerklärung von Amazon: https://www.amazon.de/gp/help/customer/display.html?nodeId=201909010</p>
 
       <h2>6. Ihre Rechte</h2>
       <p>Sie haben jederzeit das Recht:</p>
@@ -1950,8 +1959,11 @@
     <a onclick="navigateTo('impressum')">Impressum</a>
     <span style="color: #ddd;">|</span>
     <a onclick="navigateTo('datenschutz')">Datenschutz</a>
+    <span style="color: #ddd;">|</span>
+    <a onclick="openCookieSettings()">Cookie-Einstellungen</a>
   </div>
   <div class="footer-bottom">
+    <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px;">* Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. Die Geschenkempfehlungen werden mit Hilfe von KI erstellt.</p>
     &copy; 2026 Geschenk-Finder. Alle Rechte vorbehalten. Mit 💛 gemacht.
   </div>
 </footer>
@@ -2025,6 +2037,11 @@
   function cookieDecline() {
     localStorage.setItem('cookie-consent', 'necessary');
     document.getElementById('cookieBanner').classList.remove('show');
+  }
+
+  function openCookieSettings() {
+    localStorage.removeItem('cookie-consent');
+    document.getElementById('cookieBanner').classList.add('show');
   }
 
   if (!localStorage.getItem('cookie-consent')) {
