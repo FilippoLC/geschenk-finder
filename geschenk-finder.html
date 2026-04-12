@@ -848,6 +848,7 @@
   #resultsPage {
     display: none;
     animation: fadeIn 0.5s ease;
+    min-height: 100vh;
   }
 
   .results-header {
@@ -2256,7 +2257,7 @@
     if (navBtns) {
       setTimeout(() => {
         const rect = navBtns.getBoundingClientRect();
-        const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 16;
+        const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 36;
         window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
       }, 150);
     }
@@ -2323,7 +2324,7 @@
         const navBtns = step.querySelector('.nav-btns');
         if (navBtns) {
           const rect = navBtns.getBoundingClientRect();
-          const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 16;
+          const scrollTarget = window.scrollY + rect.bottom - window.innerHeight + 36;
           window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
         }
       }, 150);
