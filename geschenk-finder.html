@@ -3,26 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geschenk-Finder - Finde das perfekte Geschenk</title>
-<meta name="description" content="Finde in 30 Sekunden das perfekte Geschenk. KI-basierter Geschenk-Finder mit personalisierten Empfehlungen.">
+<title>GeschenkeHelfer - Finde das perfekte Geschenk</title>
+<meta name="description" content="Finde in 30 Sekunden das perfekte Geschenk. KI-basierter GeschenkeHelfer mit personalisierten Empfehlungen.">
 
 <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Geschenk-Finder - Das perfekte Geschenk in 30 Sekunden">
+<meta property="og:title" content="GeschenkeHelfer - Das perfekte Geschenk in 30 Sekunden">
 <meta property="og:description" content="Beschreibe die Person und unsere KI findet das ideale Geschenk. Personalisiert, schnell und mit Liebe gemacht.">
-<meta property="og:image" content="https://srv1570962.hstgr.cloud/og-image.png">
-<meta property="og:url" content="https://srv1570962.hstgr.cloud/geschenk-finder.html">
+<meta property="og:image" content="https://www.geschenkehelfer.com/og-image.png">
+<meta property="og:url" content="https://www.geschenkehelfer.com">
 <meta property="og:locale" content="de_DE">
-<meta property="og:site_name" content="Geschenk-Finder">
+<meta property="og:site_name" content="GeschenkeHelfer">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Geschenk-Finder - Das perfekte Geschenk in 30 Sekunden">
+<meta name="twitter:title" content="GeschenkeHelfer - Das perfekte Geschenk in 30 Sekunden">
 <meta name="twitter:description" content="Beschreibe die Person und unsere KI findet das ideale Geschenk. Personalisiert, schnell und mit Liebe gemacht.">
-<meta name="twitter:image" content="https://srv1570962.hstgr.cloud/og-image.png">
+<meta name="twitter:image" content="https://www.geschenkehelfer.com/og-image.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* Self-hosted fonts – kein Datentransfer zu Google */
+  @font-face {
+    font-family: 'Fredoka One';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/fredoka-one-400-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/nunito-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/nunito-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
   :root {
     --yellow: #FFD93D;
     --pink: #FF6B9D;
@@ -960,6 +984,19 @@
 
   .product-body { padding: 20px; }
 
+  .anzeige-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+
   .product-title {
     font-family: 'Fredoka One', cursive;
     font-size: 1.2rem;
@@ -1658,7 +1695,7 @@
 <nav class="navbar">
   <div class="nav-inner">
     <a class="nav-logo" onclick="navigateTo('home')">
-      <span>🎁</span> Geschenk-Finder
+      <span>🎁</span> GeschenkeHelfer
     </a>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
@@ -1676,7 +1713,7 @@
 
   <div class="header">
     <span class="logo">🎁</span>
-    <h1>Geschenk-Finder</h1>
+    <h1>GeschenkeHelfer</h1>
     <p>Finde das perfekte Geschenk in 30 Sekunden!</p>
   </div>
 
@@ -1971,9 +2008,9 @@
   </div>
 
   <div class="about-section">
-    <h2>🌍 Warum gibt es den Geschenk-Finder?</h2>
+    <h2>🌍 Warum gibt es den GeschenkeHelfer?</h2>
     <p>Jeder kennt das: Man möchte jemandem eine Freude machen, aber die Suche nach dem perfekten Geschenk kostet Stunden. Man scrollt endlos durch Online-Shops, liest unzählige Bewertungen und ist am Ende genauso ratlos wie am Anfang.</p>
-    <p>Genau deshalb haben wir den Geschenk-Finder ins Leben gerufen. Wir nutzen künstliche Intelligenz, um dir in Sekunden personalisierte Geschenkideen zu liefern - basierend auf der Person, die du beschenkst. Kein endloses Suchen mehr. Nur noch Freude.</p>
+    <p>Genau deshalb haben wir den GeschenkeHelfer ins Leben gerufen. Wir nutzen künstliche Intelligenz, um dir in Sekunden personalisierte Geschenkideen zu liefern - basierend auf der Person, die du beschenkst. Kein endloses Suchen mehr. Nur noch Freude.</p>
     <p>Aber unser Anspruch geht weiter: Wir wollen nicht nur Geschenke finden, sondern echtes Glück verbreiten. Denn wenn ein Geschenk wirklich passt, entsteht ein magischer Moment - für den Schenkenden und den Beschenkten.</p>
   </div>
 
@@ -2006,13 +2043,13 @@
   <div class="about-section">
     <h2>🎯 Unsere Vision</h2>
     <p>Stell dir eine Welt vor, in der jedes Geschenk sitzt. Keine verlegenen Lächeln beim Auspacken, keine Umtauschorgien nach Weihnachten. Stattdessen: echte Freude, echte Überraschung, echte Verbundenheit.</p>
-    <p>Wenn du den Geschenk-Finder benutzt, tust du gleichzeitig etwas Gutes: Du schenkst bewusster, vermeidest Fehlkäufe und machst jemanden wirklich glücklich. Das ist unser kleiner Beitrag für eine bessere Welt.</p>
+    <p>Wenn du den GeschenkeHelfer benutzt, tust du gleichzeitig etwas Gutes: Du schenkst bewusster, vermeidest Fehlkäufe und machst jemanden wirklich glücklich. Das ist unser kleiner Beitrag für eine bessere Welt.</p>
   </div>
 
   <div class="cta-box">
     <h2>Werde Teil unserer Mission! 🚀</h2>
     <p>Du glaubst auch daran, dass die Welt mehr Freude braucht? Du hast Ideen, wie wir noch besser werden können? Oder du willst einfach mithelfen, die Welt zu einem besseren Ort zu machen? Dann melde dich bei uns!</p>
-    <a href="mailto:hallo@geschenk-finder.de" class="cta-btn">Kontakt aufnehmen</a>
+    <a href="mailto:hallo@geschenkehelfer.com" class="cta-btn">Kontakt aufnehmen</a>
   </div>
 
 </div>
@@ -2049,31 +2086,31 @@
     <div class="legal-card">
       <h2>Angaben gemäß § 5 TMG</h2>
       <p>
-        <strong>[DEIN VOLLSTÄNDIGER NAME]</strong><br>
-        [Straße und Hausnummer]<br>
-        [PLZ] [Stadt]<br>
+        <strong>Filippo Candida</strong><br>
+        Peißenbergstraße 29<br>
+        81547 München<br>
         Deutschland
       </p>
 
       <h2>Kontakt</h2>
       <p>
-        E-Mail: [deine-email@beispiel.de]<br>
-        Telefon: [Deine Telefonnummer]
+        E-Mail: hallo@geschenkehelfer.com<br>
+        Telefon: 0178 1575949
       </p>
 
       <h2>Umsatzsteuer-ID</h2>
       <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>
-      [DE XXXXXXXXX] (falls vorhanden)</p>
+      DE303853622</p>
 
       <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
       <p>
-        [DEIN VOLLSTÄNDIGER NAME]<br>
-        [Straße und Hausnummer]<br>
-        [PLZ] [Stadt]
+        Filippo Candida<br>
+        Peißenbergstraße 29<br>
+        81547 München
       </p>
 
       <h2>EU-Streitschlichtung</h2>
-      <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a><br>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 
       <h2>Haftungsausschluss</h2>
       <h3>Haftung für Inhalte</h3>
@@ -2083,7 +2120,7 @@
       <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
 
       <h2>Affiliate-Hinweis</h2>
-      <p>Diese Webseite enthält sogenannte Affiliate-Links. Wenn du über diese Links Produkte kaufst, erhalten wir eine kleine Provision. Der Preis für dich ändert sich dadurch nicht. Diese Einnahmen helfen uns, den Geschenk-Finder kostenfrei anzubieten und weiterzuentwickeln.</p>
+      <p>Diese Webseite enthält sogenannte Affiliate-Links. Wenn du über diese Links Produkte kaufst, erhalten wir eine kleine Provision. Der Preis für dich ändert sich dadurch nicht. Diese Einnahmen helfen uns, den GeschenkeHelfer kostenfrei anzubieten und weiterzuentwickeln.</p>
       <p><strong>Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.</strong></p>
 
       <h2>Hinweis zur Künstlichen Intelligenz</h2>
@@ -2109,7 +2146,7 @@
       Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.</p>
 
       <p><strong>Wie erfassen wir Ihre Daten?</strong><br>
-      Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen (z.B. durch Eingabe in das Geschenk-Finder Formular). Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).</p>
+      Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen (z.B. durch Eingabe in das GeschenkeHelfer Formular). Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).</p>
 
       <h2>2. Hosting</h2>
       <p>Diese Website wird auf einem Virtual Private Server (VPS) bei Hostinger International Ltd., Švitrigailos str. 34, Vilnius 03230, Litauen gehostet. Beim Besuch unserer Website erfasst Hostinger automatisch Informationen in Server-Log-Dateien, die Ihr Browser übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen entnehmen Sie der Datenschutzerklärung von Hostinger: https://www.hostinger.de/datenschutzrichtlinie</p>
@@ -2120,19 +2157,22 @@
 
       <h3>Hinweis zur verantwortlichen Stelle</h3>
       <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br><br>
-      [DEIN VOLLSTÄNDIGER NAME]<br>
-      [Straße und Hausnummer]<br>
-      [PLZ] [Stadt]<br>
-      E-Mail: [deine-email@beispiel.de]</p>
+      Filippo Candida<br>
+      Peißenbergstraße 29<br>
+      81547 München<br>
+      E-Mail: hallo@geschenkehelfer.com</p>
 
       <h2>4. Datenerfassung auf dieser Website</h2>
       <h3>Cookies</h3>
       <p>Unsere Website verwendet Cookies. Dabei handelt es sich um kleine Textdateien, die Ihr Webbrowser auf Ihrem Endgerät speichert. Wir verwenden folgende Arten von Cookies:</p>
       <ul>
-        <li><strong>Technisch notwendige Cookies:</strong> Diese sind für den Betrieb der Seite erforderlich (z.B. Cookie-Einwilligung).</li>
-        <li><strong>Analyse-Cookies:</strong> Diese werden nur mit Ihrer Einwilligung gesetzt und helfen uns zu verstehen, wie Besucher unsere Seite nutzen.</li>
+        <li><strong>Technisch notwendige Speicherung:</strong> Wir speichern Ihre Cookie-Einwilligung im LocalStorage des Browsers. Es werden keine Analyse- oder Tracking-Cookies gesetzt.</li>
+        <li><strong>Amazon-Affiliate-Cookies:</strong> Wenn Sie auf einen Amazon-Produktlink klicken, setzt Amazon eigene Cookies (Laufzeit: 24 Stunden, bzw. 90 Tage bei Warenkorb-Ablage), um Provisionen nachvollziehen zu können. Diese Cookies werden erst durch Ihren Klick auf Amazon-Links gesetzt.</li>
       </ul>
       <p>Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben.</p>
+
+      <h3>Schriftarten (Google Fonts)</h3>
+      <p>Diese Website verwendet die Schriftarten „Fredoka One" und „Nunito". Die Schriftdateien werden lokal von unserem eigenen Server geladen. Es findet <strong>keine Verbindung zu Google-Servern</strong> statt und es werden keine Daten an Google übermittelt.</p>
 
       <h3>Server-Log-Dateien</h3>
       <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:</p>
@@ -2146,8 +2186,8 @@
       </ul>
       <p>Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p>
 
-      <h3>Geschenk-Finder Formular</h3>
-      <p>Wenn Sie den Geschenk-Finder nutzen, werden die von Ihnen eingegebenen Daten (Anlass, Person, Geschlecht, Alter, Interessen, Budget) an unseren Server übermittelt und zur Generierung personalisierter Geschenkempfehlungen verarbeitet. Diese Daten werden nicht dauerhaft gespeichert und nach der Bearbeitung Ihrer Anfrage gelöscht.</p>
+      <h3>GeschenkeHelfer Formular</h3>
+      <p>Wenn Sie den GeschenkeHelfer nutzen, werden die von Ihnen eingegebenen Daten (Anlass, Person, Geschlecht, Alter, Interessen, Budget) an unseren Server übermittelt und zur Generierung personalisierter Geschenkempfehlungen verarbeitet. Diese Daten werden nicht dauerhaft gespeichert und nach der Bearbeitung Ihrer Anfrage gelöscht.</p>
 
       <h3>Einsatz von Künstlicher Intelligenz</h3>
       <p>Zur Erstellung personalisierter Geschenkempfehlungen werden die von Ihnen im Formular eingegebenen Daten an den KI-Dienst OpenAI (OpenAI, L.L.C., 3180 18th Street, San Francisco, CA 94110, USA) übermittelt. OpenAI verarbeitet diese Daten ausschließlich zur Generierung der Empfehlungen. Es werden keine personenbezogenen Daten wie Name, E-Mail oder IP-Adresse an OpenAI übermittelt — lediglich die Formularangaben (Anlass, Person, Geschlecht, Alter, Interessen, Budget). Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch Nutzung des Formulars). Weitere Informationen: https://openai.com/privacy</p>
@@ -2192,7 +2232,7 @@
   </div>
   <div class="footer-bottom">
     <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px;">* Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. Die Geschenkempfehlungen werden mit Hilfe von KI erstellt.</p>
-    &copy; 2026 Geschenk-Finder. Alle Rechte vorbehalten. Mit 💛 gemacht.
+    &copy; 2026 GeschenkeHelfer. Alle Rechte vorbehalten. Mit 💛 gemacht.
   </div>
 </footer>
 
@@ -2201,7 +2241,7 @@
   <div class="cookie-inner">
     <div class="cookie-text">
       <h3>🍪 Cookies</h3>
-      <p>Wir verwenden Cookies, um dir die bestmögliche Erfahrung zu bieten. Technisch notwendige Cookies sind immer aktiv. Analyse-Cookies helfen uns, die Seite zu verbessern. <a onclick="navigateTo('datenschutz')">Mehr erfahren</a></p>
+      <p>Wir nutzen technisch notwendige Speicherung (z.B. Cookie-Einwilligung) sowie Amazon-Affiliate-Cookies, wenn du auf Produktlinks klickst. Es werden keine Analyse- oder Tracking-Cookies gesetzt. <a onclick="navigateTo('datenschutz')">Mehr erfahren</a></p>
     </div>
     <div class="cookie-buttons">
       <button class="cookie-btn cookie-btn-decline" onclick="cookieDecline()">Nur notwendige</button>
@@ -2211,7 +2251,8 @@
 </div>
 
 <script>
-  const WEBHOOK_URL = 'https://n8n.srv1570962.hstgr.cloud/webhook/finder-3000';
+  const WEBHOOK_URL = 'https://n8n.geschenkehelfer.com/webhook/geschenkehelfer-3000';
+  const WEBHOOK_SECRET = '7005b4d6a8242dc1d9f7de282f0cf552';
 
   let liveProducts = [];
 
@@ -2505,6 +2546,7 @@
             <div class="product-badge">${p.badge}</div>
           </div>
           <div class="product-body">
+            <div class="anzeige-label">Anzeige</div>
             <div class="product-title">${p.title}</div>
             <div class="product-stars">
               ${renderStars(p.rating)}
@@ -2618,7 +2660,7 @@
 
     fetch(WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Webhook-Secret': WEBHOOK_SECRET },
       body: JSON.stringify(formData)
     })
     .then(r => r.json())
