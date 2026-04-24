@@ -2064,16 +2064,15 @@
     <p>Handverlesene Geschenkideen, direkt bestellen.</p>
   </div>
 
-  <div class="shop-coming-soon">
-    <span class="emoji">🚧</span>
-    <h2>Coming Soon!</h2>
-    <p>Wir arbeiten gerade an unserem Shop mit handverlesenen Geschenkideen, Geschenkboxen und exklusiven Bundles. Lass dich benachrichtigen, wenn es soweit ist!</p>
-    <div class="shop-notify-form">
-      <input type="email" placeholder="Deine E-Mail-Adresse" id="shopEmail">
-      <button onclick="shopNotify()">Benachrichtigen</button>
-    </div>
-    <p id="shopNotifyMsg" style="display:none; color: var(--green); margin-top: 16px; font-weight: 700;">Danke! Wir melden uns, sobald der Shop live ist. 🎉</p>
+  <div id="shopState" class="shop-coming-soon">
+    <span class="emoji">⏳</span>
+    <h2>Lädt…</h2>
+    <p>Die handverlesenen Produkte werden geladen.</p>
   </div>
+
+  <div id="shopList"></div>
+
+  <p style="text-align:center; font-size:0.75rem; color:#aaa; margin-top:32px; line-height:1.5;">* Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.</p>
 
 </div>
 </div><!-- end page-shop -->
@@ -2279,6 +2278,31 @@
 
     document.getElementById('navLinks').classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (page === 'shop') loadShopProducts();
+  }
+
+  // ========== SHOP: dynamische Produkte laden ==========
+  async function loadShopProducts() {
+    const state = document.getElementById('shopState');
+    const list = document.getElementById('shopList');
+    state.style.display = '';
+    state.innerHTML = '<span class="emoji">⏳</span><h2>Lädt…</h2><p>Die handverlesenen Produkte werden geladen.</p>';
+    list.innerHTML = '';
+    try {
+      const r = await fetch('https://n8n.geschenkehelfer.com/webhook/shop-products', { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const data = await r.json();
+      const products = Array.isArray(data) ? data : (data.products || []);
+      if (!products.length) {
+        state.innerHTML = '<span class="emoji">📭</span><h2>Bald hier!</h2><p>Unsere handverlesenen Empfehlungen kommen in Kürze. Schau bald wieder rein.</p>';
+        return;
+      }
+      state.style.display = 'none';
+      list.innerHTML = products.map((p, i) => renderProduct(p, i)).join('');
+    } catch (err) {
+      state.innerHTML = `<span class="emoji">⚠️</span><h2>Ups!</h2><p>Der Shop konnte gerade nicht geladen werden. Versuch es gleich nochmal.</p>`;
+    }
   }
 
   function toggleMenu() {
@@ -2553,10 +2577,10 @@
               <span class="product-rating-text">${p.rating} (${p.reviews})</span>
             </div>
             <div class="product-desc">${p.desc}</div>
-            <div class="why-box">
+            ${p.why ? `<div class="why-box">
               <div class="why-label">💡 Warum passt das?</div>
               <div class="why-text">${p.why}</div>
-            </div>
+            </div>` : ''}
             <div class="delivery-row">
               <span class="delivery-icon">🚚</span>
               <span class="delivery-text" style="color: ${deliveryColor}">Lieferung: <strong>${p.delivery}</strong></span>

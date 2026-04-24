@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Shop Manager – GeschenkeHelfer</title>
+
+<style>
+  @font-face {
+    font-family: 'Fredoka One';
+    font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/fredoka-one-400-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Nunito';
+    font-style: normal; font-weight: 400 800; font-display: swap;
+    src: url('fonts/nunito-latin.woff2') format('woff2');
+  }
+
+  :root {
+    --yellow: #FFD93D;
+    --pink: #FF6B9D;
+    --blue: #4ECDC4;
+    --purple: #C77DFF;
+    --orange: #FF8C42;
+    --green: #6BCB77;
+    --red: #E74C3C;
+    --bg: #FFF8F0;
+    --card: #ffffff;
+    --text: #2D2D2D;
+    --muted: #6B6B6B;
+    --border: #E8E3D8;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255,107,157,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(78,205,196,0.08) 0%, transparent 40%);
+    pointer-events: none; z-index: 0;
+  }
+
+  h1, h2, h3 { font-family: 'Fredoka One', cursive; font-weight: 400; }
+
+  /* ===== LOGIN OVERLAY ===== */
+  .login-overlay {
+    position: fixed; inset: 0;
+    background: rgba(45, 45, 45, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .login-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    max-width: 380px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+  .login-card h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .login-card p { color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; }
+  .login-card input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+  .login-card input[type="password"]:focus { border-color: var(--purple); }
+  .login-card button {
+    width: 100%;
+    padding: 14px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: white;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .login-card button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(199,125,255,0.4); }
+  .login-card button:active { transform: translateY(0); }
+  .login-error {
+    color: var(--red);
+    font-size: 0.9rem;
+    margin-top: 12px;
+    min-height: 1.2em;
+    font-weight: 700;
+  }
+
+  /* ===== MAIN APP ===== */
+  .app {
+    position: relative; z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed var(--border);
+  }
+  .app-header h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .btn-logout {
+    background: none;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: inherit; font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--purple);
+  }
+  .section-hint { color: var(--muted); font-size: 0.88rem; margin-bottom: 16px; }
+
+  /* ===== ADD FORM ===== */
+  .add-form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .add-form input[type="url"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .add-form input[type="url"]:focus { border-color: var(--pink); }
+  .add-form button {
+    padding: 12px 24px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: white;
+    background: linear-gradient(135deg, var(--green), #4fb863);
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .add-form button:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(107,203,119,0.35); }
+  .add-form button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ===== PRODUCT LIST ===== */
+  #productList { display: flex; flex-direction: column; gap: 12px; }
+
+  .product-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: #FFFBF5;
+    transition: border-color 0.15s;
+  }
+  .product-row:hover { border-color: var(--purple); }
+
+  .product-row img {
+    width: 72px; height: 72px;
+    object-fit: contain;
+    background: white;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .product-row .info { flex: 1; min-width: 0; }
+  .product-row .title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .product-row .meta {
+    color: var(--muted);
+    font-size: 0.82rem;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .product-row .meta .price { color: var(--green); font-weight: 800; }
+  .product-row .meta .asin { font-family: 'Courier New', monospace; }
+
+  .actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .btn-icon {
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    border: 2px solid var(--border);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.15s;
+  }
+  .btn-icon:hover { transform: translateY(-1px); }
+  .btn-icon.edit:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-icon.delete:hover { border-color: var(--red); color: var(--red); }
+  .btn-icon.up:hover, .btn-icon.down:hover { border-color: var(--purple); color: var(--purple); }
+  .btn-icon:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* ===== EDIT PANEL ===== */
+  .edit-panel {
+    border: 2px solid var(--blue);
+    border-radius: 12px;
+    padding: 16px;
+    background: #F0FDFC;
+    margin-top: 8px;
+  }
+  .edit-panel label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+    color: var(--muted);
+  }
+  .edit-panel input, .edit-panel textarea, .edit-panel select {
+    width: 100%;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    outline: none;
+    background: white;
+  }
+  .edit-panel textarea { resize: vertical; min-height: 60px; }
+  .edit-panel input:focus, .edit-panel textarea:focus, .edit-panel select:focus { border-color: var(--blue); }
+  .edit-panel .edit-actions { display: flex; gap: 8px; }
+  .edit-panel .edit-actions button {
+    flex: 1;
+    padding: 10px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    border: none; border-radius: 8px;
+    cursor: pointer;
+  }
+  .edit-panel .save { background: var(--blue); color: white; }
+  .edit-panel .cancel { background: var(--border); color: var(--text); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+  .empty-state .emoji { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+  .loader {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(200%);
+    background: var(--text);
+    color: white;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 2000;
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
+
+  @media (max-width: 600px) {
+    .app-header h1 { font-size: 1.4rem; }
+    .product-row { flex-wrap: wrap; }
+    .product-row .info { min-width: 180px; }
+    .add-form { flex-direction: column; }
+    .add-form button { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <h1>🔒 Shop Manager</h1>
+    <p>Bitte Passwort eingeben</p>
+    <form id="loginForm" autocomplete="off">
+      <input type="password" id="pwInput" placeholder="Passwort" autofocus required>
+      <button type="submit">Einloggen</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="adminApp" hidden>
+
+  <div class="app-header">
+    <h1>🛍️ Shop Manager</h1>
+    <button class="btn-logout" onclick="logout()">Ausloggen</button>
+  </div>
+
+  <section class="section">
+    <h2>➕ Neuer Artikel</h2>
+    <div class="section-hint">Füge einen beliebigen Amazon-Link ein (mit oder ohne Affiliate-Tag). Dein Tag <code>geschenkehe0b-21</code> wird automatisch eingebaut.</div>
+    <form class="add-form" id="addForm">
+      <input type="url" id="affLink" placeholder="https://www.amazon.de/dp/..." required>
+      <button type="submit" id="addBtn">Hinzufügen</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2>📦 Produkte im Shop (<span id="prodCount">0</span>)</h2>
+    <div class="section-hint">Reihenfolge mit ↑/↓ ändern, Titel/Beschreibung/Preis/Badge bearbeiten oder löschen.</div>
+    <div id="productList"></div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'https://n8n.geschenkehelfer.com/webhook';
+  const PW_KEY = 'shopAdminPw';
+
+  let products = []; // lokaler State
+
+  // ==================== LOGIN ====================
+  const overlay = document.getElementById('loginOverlay');
+  const app = document.getElementById('adminApp');
+
+  function getPw() { return sessionStorage.getItem(PW_KEY); }
+  function setPw(pw) { sessionStorage.setItem(PW_KEY, pw); }
+  function clearPw() { sessionStorage.removeItem(PW_KEY); }
+
+  function showApp() {
+    overlay.hidden = true;
+    overlay.style.display = 'none';
+    app.hidden = false;
+    loadProducts();
+  }
+
+  function showLogin() {
+    overlay.hidden = false;
+    overlay.style.display = 'flex';
+    app.hidden = true;
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+
+  function logout() {
+    clearPw();
+    showLogin();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('pwInput').value.trim();
+    if (!pw) return;
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = '';
+
+    // Verifiziere das Passwort durch einen Delete-Request mit fake-ASIN.
+    // Bei falschem Passwort → Error. Bei richtigem Passwort → "Produkt nicht gefunden" o.ä. (aber success-Codewort da).
+    // Einfacher: wir probieren direkt einen update ohne asin → wenn unauthorized, wissen wirs; sonst OK.
+    setPw(pw);
+    showApp();
+  });
+
+  // ==================== API HELPERS ====================
+  async function apiGet(path) {
+    const r = await fetch(`${API}/${path}`, { method: 'GET' });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+
+  async function apiPost(path, body) {
+    const r = await fetch(`${API}/${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: getPw(), ...body })
+    });
+    const text = await r.text();
+    // n8n bricht bei throw im Code-Node den Flow ab → leerer Body. Typisch: falsches Passwort oder ungültige Eingabe.
+    if (!text.trim()) {
+      throw new Error('Keine Antwort vom Server. Passwort falsch oder Eingabe ungültig?');
+    }
+    let data;
+    try { data = JSON.parse(text); }
+    catch (e) { throw new Error('Ungültige Server-Antwort: ' + text.slice(0, 120)); }
+    if (!r.ok) throw new Error(data.message || `HTTP ${r.status}`);
+    return data;
+  }
+
+  // ==================== TOAST ====================
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function toast(msg, kind = 'success') {
+    clearTimeout(toastTimer);
+    toastEl.textContent = msg;
+    toastEl.className = 'toast show ' + kind;
+    toastTimer = setTimeout(() => { toastEl.className = 'toast ' + kind; }, 3500);
+  }
+
+  // ==================== LOAD ====================
+  async function loadProducts() {
+    const list = document.getElementById('productList');
+    list.innerHTML = '<div class="empty-state"><span class="emoji">⏳</span>Lädt…</div>';
+    try {
+      const data = await apiGet('shop-products');
+      products = Array.isArray(data) ? data : (data.products || []);
+      renderList();
+    } catch (err) {
+      list.innerHTML = `<div class="empty-state"><span class="emoji">⚠️</span>Konnte Produkte nicht laden.<br><small>${err.message}</small></div>`;
+    }
+  }
+
+  function renderList() {
+    const list = document.getElementById('productList');
+    document.getElementById('prodCount').textContent = products.length;
+
+    if (products.length === 0) {
+      list.innerHTML = '<div class="empty-state"><span class="emoji">📭</span>Noch keine Produkte im Shop.<br><small>Füge oben einen Amazon-Link hinzu.</small></div>';
+      return;
+    }
+
+    list.innerHTML = products.map((p, i) => productRow(p, i)).join('');
+  }
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+  }
+
+  function productRow(p, i) {
+    const fallback = "this.src='https://placehold.co/150x150/FFF0F8/FF6B9D?text=🎁'";
+    return `
+      <div class="product-row" data-asin="${escapeHtml(p.asin)}">
+        <img src="${escapeHtml(p.img)}" alt="" onerror="${fallback}">
+        <div class="info">
+          <div class="title">${escapeHtml(p.title)}</div>
+          <div class="meta">
+            <span class="price">${escapeHtml(p.price)}€</span>
+            <span>★ ${escapeHtml(String(p.rating ?? '–'))}</span>
+            <span class="asin">${escapeHtml(p.asin)}</span>
+            ${p.badge ? `<span>🏷️ ${escapeHtml(p.badge)}</span>` : ''}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-icon up"     title="Nach oben"   ${i === 0 ? 'disabled' : ''} onclick="moveProduct('${escapeHtml(p.asin)}', -1)">↑</button>
+          <button class="btn-icon down"   title="Nach unten"  ${i === products.length - 1 ? 'disabled' : ''} onclick="moveProduct('${escapeHtml(p.asin)}', 1)">↓</button>
+          <button class="btn-icon edit"   title="Bearbeiten"  onclick="openEdit('${escapeHtml(p.asin)}')">✎</button>
+          <button class="btn-icon delete" title="Löschen"     onclick="deleteProduct('${escapeHtml(p.asin)}')">🗑</button>
+        </div>
+      </div>
+      <div id="edit-${escapeHtml(p.asin)}"></div>
+    `;
+  }
+
+  // ==================== ADD ====================
+  document.getElementById('addForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('affLink');
+    const btn = document.getElementById('addBtn');
+    const url = input.value.trim();
+    if (!url) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loader"></span> Lädt…';
+    try {
+      const res = await apiPost('shop-add', { affiliate_link: url });
+      if (res.success) {
+        toast(`✨ "${res.product.title.slice(0, 50)}…" hinzugefügt`, 'success');
+        input.value = '';
+        await loadProducts();
+      } else if (res.duplicate) {
+        toast('⚠️ Produkt ist bereits im Shop.', 'error');
+      } else {
+        toast(res.message || 'Unbekannter Fehler.', 'error');
+      }
+    } catch (err) {
+      toast('❌ ' + (err.message || 'Fehler beim Hinzufügen.'), 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Hinzufügen';
+    }
+  });
+
+  // ==================== DELETE ====================
+  async function deleteProduct(asin) {
+    const p = products.find(x => x.asin === asin);
+    if (!p) return;
+    if (!confirm(`Wirklich löschen?\n\n"${p.title}"`)) return;
+    try {
+      const res = await apiPost('shop-delete', { asin });
+      if (res.success) {
+        toast('🗑 Gelöscht.', 'success');
+        await loadProducts();
+      } else {
+        toast(res.message || 'Löschen fehlgeschlagen.', 'error');
+      }
+    } catch (err) {
+      toast('❌ ' + err.message, 'error');
+    }
+  }
+
+  // ==================== REORDER ====================
+  async function moveProduct(asin, direction) {
+    const idx = products.findIndex(p => p.asin === asin);
+    if (idx === -1) return;
+    const newIdx = idx + direction;
+    if (newIdx < 0 || newIdx >= products.length) return;
+
+    // Lokal tauschen (optimistisch)
+    const arr = products.slice();
+    const [removed] = arr.splice(idx, 1);
+    arr.splice(newIdx, 0, removed);
+    products = arr;
+    renderList();
+
+    try {
+      const order = products.map(p => p.asin);
+      const res = await apiPost('shop-reorder', { order });
+      if (!res.success) {
+        toast('Reorder fehlgeschlagen. Lade neu…', 'error');
+        await loadProducts();
+      }
+    } catch (err) {
+      toast('❌ ' + err.message, 'error');
+      await loadProducts();
+    }
+  }
+
+  // ==================== EDIT ====================
+  function openEdit(asin) {
+    const p = products.find(x => x.asin === asin);
+    if (!p) return;
+    const container = document.getElementById('edit-' + asin);
+    container.innerHTML = `
+      <div class="edit-panel">
+        <label>Titel</label>
+        <input type="text" id="ed-title-${escapeHtml(asin)}" value="${escapeHtml(p.title)}">
+        <label>Beschreibung</label>
+        <textarea id="ed-desc-${escapeHtml(asin)}">${escapeHtml(p.desc)}</textarea>
+        <label>Preis (nur Zahl, z.B. 29,99)</label>
+        <input type="text" id="ed-price-${escapeHtml(asin)}" value="${escapeHtml(p.price)}">
+        <label>Badge</label>
+        <select id="ed-badge-${escapeHtml(asin)}">
+          <option ${p.badge === 'Shop' ? 'selected' : ''}>Shop</option>
+          <option ${p.badge === 'Bestseller' ? 'selected' : ''}>Bestseller</option>
+          <option ${p.badge === 'Amazon Choice' ? 'selected' : ''}>Amazon Choice</option>
+          <option ${p.badge === 'Top Bewertet' ? 'selected' : ''}>Top Bewertet</option>
+          <option ${p.badge === 'Neu' ? 'selected' : ''}>Neu</option>
+          <option ${p.badge === 'Unser Tipp' ? 'selected' : ''}>Unser Tipp</option>
+        </select>
+        <label>Warum passt das? (optional, erscheint in der Karte)</label>
+        <textarea id="ed-why-${escapeHtml(asin)}" placeholder="Kurzer Text, warum du dieses Produkt empfiehlst…">${escapeHtml(p.why)}</textarea>
+        <div class="edit-actions">
+          <button class="save"   onclick="saveEdit('${escapeHtml(asin)}')">Speichern</button>
+          <button class="cancel" onclick="closeEdit('${escapeHtml(asin)}')">Abbrechen</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function closeEdit(asin) {
+    document.getElementById('edit-' + asin).innerHTML = '';
+  }
+
+  async function saveEdit(asin) {
+    const patch = {
+      asin,
+      title: document.getElementById('ed-title-' + asin).value,
+      desc:  document.getElementById('ed-desc-' + asin).value,
+      price: document.getElementById('ed-price-' + asin).value,
+      badge: document.getElementById('ed-badge-' + asin).value,
+      why:   document.getElementById('ed-why-' + asin).value
+    };
+    try {
+      const res = await apiPost('shop-update', patch);
+      if (res.success) {
+        toast('✅ Gespeichert.', 'success');
+        closeEdit(asin);
+        await loadProducts();
+      } else {
+        toast(res.message || 'Speichern fehlgeschlagen.', 'error');
+      }
+    } catch (err) {
+      toast('❌ ' + err.message, 'error');
+    }
+  }
+
+  // ==================== BOOT ====================
+  if (getPw()) { showApp(); } else { showLogin(); }
+</script>
+</body>
+</html>
