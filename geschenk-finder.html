@@ -2250,8 +2250,7 @@
 </div>
 
 <script>
-  const WEBHOOK_URL = 'https://n8n.geschenkehelfer.com/webhook/geschenkehelfer-3000';
-  const WEBHOOK_SECRET = '7005b4d6a8242dc1d9f7de282f0cf552';
+  const WEBHOOK_URL = '/api/search';
 
   let liveProducts = [];
 
@@ -2684,7 +2683,7 @@
 
     fetch(WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Webhook-Secret': WEBHOOK_SECRET },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     })
     .then(r => r.json())
